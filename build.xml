@@ -1,0 +1,63 @@
+<project name="maze-bot">
+    <property name="src.dir" value="src"/>
+    <property name="lib.dir" value="lib"/>
+
+    <property name="dat.dir" value="dat"/>
+    <property name="testcases.dir" value="${dat.dir}/testcases"/>
+
+    <property name="out.dir" value="out"/>
+    <property name="classes.dir" value="${out.dir}/classes"/>
+    <property name="jar.dir" value="${out.dir}/jar"/>
+
+    <property name="main-class" value="Main"/>
+    
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="lombok.jar"/>
+        </fileset>
+    </path>
+
+    <echo message="Classpath = ${classpath}"/>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dat.dir}"/>
+        <mkdir dir="${raw_data.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java fork="true" classname="${main-class}">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/${ant.project.name}.jar"/>
+            </classpath>
+        </java>
+
+        <exec dir="." executable="python">
+            <arg line="${src.dir}/plot/plot.py"/>
+        </exec>
+    </target>
+
+    <target name="clean">
+        <delete dir="${out.dir}"/>
+
+        <delete dir="${dat.dir}"/>
+        <mkdir dir="${dat.dir}"/>
+        <mkdir dir="${raw_data.dir}"/>
+    
+        <touch file="${dat.dir}/.gitkeep"/>
+        <touch file="${raw_data.dir}/.gitkeep"/>
+    </target>
+
+    <target name="main" depends="clean,run"/>    
+</project>
