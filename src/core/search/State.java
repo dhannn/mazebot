@@ -6,7 +6,7 @@ import lombok.Getter;
 @SuppressWarnings("unused")
 public class State 
 {
-    @Getter private Cell botLocation;
+    private Cell botLocation;
     private State predecessor;
 
     /**
@@ -16,7 +16,8 @@ public class State
      */
     public State(Cell cell, State predecessor)
     {
-
+        this.botLocation = cell;
+        this.predecessor = predecessor;
     }
 
     /**
@@ -26,6 +27,10 @@ public class State
      */
     public static boolean isValid(State state)
     {
+        if(state.getBotLocation().getType() == Cell.SPACE) {
+            return true;
+        }
+
         return false;
     }
 
@@ -33,10 +38,18 @@ public class State
      * Checks if the given state is a goal state
      * @param state
      * @param goalCell
-     * @return {@code true} if valid, {@code false} otherwise
+     * @return {@code true} if is goal, {@code false} otherwise
      */
     public static boolean isGoal(State state, Cell goalCell)
     {
+        if(state.getBotLocation() == goalCell) {
+            return true;
+        }
+
         return false;
+    }
+
+    public Cell getBotLocation() {
+        return botLocation;
     }
 }
