@@ -46,4 +46,20 @@ public class Cell
     {
         return Math.abs(other.col - col) + Math.abs(other.row - row);
     }
+
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getColumn() {
+        return this.col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setColumn(int col) {
+        this.col = col;
+    }
 }

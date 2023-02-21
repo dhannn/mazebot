@@ -2,7 +2,6 @@ package core.search;
 
 import core.maze.Cell;
 import core.maze.Cell.Type;
-import lombok.Getter;
 
 @SuppressWarnings("unused")
 public class State 
@@ -51,6 +50,18 @@ public class State
     }
 
     public Cell getBotLocation() {
-        return botLocation;
+        return this.botLocation;
+    }
+
+    public State getPredecessor() {
+        return this.predecessor;
+    }
+
+    public void setBotLocation(Cell botLocation) {
+        this.botLocation = botLocation;
+    }
+
+    public void setPredecessor(State predecessor) {
+        this.predecessor = predecessor;
     }
 }

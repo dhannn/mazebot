@@ -6,9 +6,16 @@ import core.search.State;
 public class Right extends Action
 {
     @Override
-    public void act(State state) 
+    public void act(State state)
     {
-        
+        State temp = new State(state.getBotLocation(), state.getPredecessor());
+
+        temp.getBotLocation().setColumn(temp.getBotLocation().getColumn() + 1);
+
+        if (state.isValid(temp)) {
+            state.setPredecessor(state);
+            state.getBotLocation().setColumn(state.getBotLocation().getColumn() + 1);
+        }
     }
     
 }
