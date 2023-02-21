@@ -20,6 +20,11 @@ public class State
 
     }
 
+    public State(Cell cell)
+    {
+        botLocation = cell;
+    }
+
     /**
      * Checks if the given state is valid
      * @param state

@@ -6,20 +6,26 @@ import java.util.List;
 
 public abstract class SearchStrategy 
 {
-    protected MazeBot mazeBot;
     protected List<State> solutionPath;
     protected int numExplored;
     protected HashSet<State> exploredStates;
     protected Hashtable<State, Integer> orderOfStates;
     protected boolean isFound;
 
+    
+    protected State initial;
+    protected State goal;
+
     /**
-     * Initializes the object variables
-     * @param mazeBot
+     * 
+     * @param initial
+     * @param goal
      */
-    public SearchStrategy(MazeBot mazeBot)
+    public SearchStrategy(State initial, State goal)
     {
-        this.mazeBot = mazeBot;
+        this.initial = initial;
+        this.goal = goal;
+
         exploredStates = new HashSet<State>();
         numExplored = 0;
         orderOfStates = new Hashtable<State, Integer>();

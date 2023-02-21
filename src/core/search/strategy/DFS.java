@@ -10,11 +10,10 @@ import core.search.State;
 public class DFS extends SearchStrategy 
 {
     Stack<State> states;
-    State goal;
 
-    public DFS(MazeBot mazeBot) 
+    public DFS(State initial, State goal) 
     {
-        super(mazeBot);
+        super(initial, goal);
         states = new Stack<State>();
         solutionPath = new Stack<State>();
         goal = null;
@@ -23,7 +22,6 @@ public class DFS extends SearchStrategy
     @Override
     public void search() 
     {
-        State initial = mazeBot.getInitial();
         states.push(initial);
 
         while(!states.empty()) 
@@ -38,7 +36,7 @@ public class DFS extends SearchStrategy
             
             states.addAll(unexplored);
             
-            if (State.isGoal(current, mazeBot.getGoal().getBotLocation()))
+            if (State.isGoal(current, goal.getBotLocation()))
             {
                 goal = current;
                 isFound = true;
@@ -52,7 +50,6 @@ public class DFS extends SearchStrategy
     {
         if (goal == null) return;
 
-        State initial = mazeBot.getInitial();
         State current = goal;
 
         while (!current.equals(initial))
