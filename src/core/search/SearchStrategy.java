@@ -1,16 +1,17 @@
 package core.search;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 
 public abstract class SearchStrategy 
 {
     protected MazeBot mazeBot;
-    protected ArrayList<State> solutionPath;
+    protected List<State> solutionPath;
     protected int numExplored;
     protected HashSet<State> exploredStates;
     protected Hashtable<State, Integer> orderOfStates;
+    protected boolean isFound;
 
     /**
      * Initializes the object variables
@@ -19,10 +20,10 @@ public abstract class SearchStrategy
     public SearchStrategy(MazeBot mazeBot)
     {
         this.mazeBot = mazeBot;
-        solutionPath = new ArrayList<State>();
         exploredStates = new HashSet<State>();
         numExplored = 0;
         orderOfStates = new Hashtable<State, Integer>();
+        isFound = false;
     }
 
     public abstract void search();

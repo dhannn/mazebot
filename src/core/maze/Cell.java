@@ -19,6 +19,8 @@ public class Cell
     private int col;
     private Type type;
     
+    public Cell() {}
+
     public Cell(int row, int col)
     {
         this.row = row;

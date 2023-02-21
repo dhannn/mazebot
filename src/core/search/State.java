@@ -7,14 +7,15 @@ import lombok.Getter;
 public class State 
 {
     @Getter private Cell botLocation;
-    private State predecessor;
+    @Getter private State predecessor;
+    private Action action;
 
     /**
      * Slay
      * @param cell
      * @param predecessor
      */
-    public State(Cell cell, State predecessor)
+    public State(Cell cell, Action action, State predecessor)
     {
 
     }

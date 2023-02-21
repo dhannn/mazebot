@@ -27,6 +27,9 @@ public class Maze
 
     public Cell getCell(int row, int col)
     {
+        if (row < 0 || col < 0)
+            return new NullCell();
+
         return maze[row][col];
     }
 
