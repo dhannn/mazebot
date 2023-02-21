@@ -1,6 +1,7 @@
 package core.search;
 
 import core.maze.Cell;
+import core.maze.Cell.Type;
 import lombok.Getter;
 
 @SuppressWarnings("unused")
@@ -27,7 +28,7 @@ public class State
      */
     public static boolean isValid(State state)
     {
-        if(state.getBotLocation().getType() == Cell.SPACE) {
+        if(state.getBotLocation().getType() == Type.SPACE) {
             return true;
         }
 
