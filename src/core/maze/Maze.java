@@ -1,13 +1,15 @@
 package core.maze;
 
+import core.maze.Cell.Type;
+import lombok.Getter;
 import lombok.Setter;
 
 public class Maze 
 {
     Cell[][] maze;
     @Setter int size;
-    @Setter Cell initialCell;
-    @Setter Cell goalCell;
+    @Getter @Setter Cell initialCell;
+    @Getter @Setter Cell goalCell;
     
     public final static int LEFT  =   0;
     public final static int UP    =   1;
@@ -36,6 +38,21 @@ public class Maze
     public void setCell(int row, int col, Cell cell)
     {
         maze[row][col] = cell;
+    }
+
+    public Type[][] getCellTypes()
+    {
+        Type[][] types = new Type[size][size];
+        
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                types[i][j] = maze[i][j].getType();
+            }
+        }
+
+        return types;
     }
 
     @Override

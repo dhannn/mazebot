@@ -1,5 +1,7 @@
 package core.maze;
 
+import lombok.Getter;
+
 public class Cell 
 {
     public enum Type
@@ -15,8 +17,8 @@ public class Cell
         }
     }
 
-    private int row;
-    private int col;
+    @Getter private int row;
+    @Getter private int col;
     private Type type;
     
     public Cell() {}

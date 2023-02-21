@@ -25,9 +25,8 @@ public class DFS extends SearchStrategy
     {
         State initial = mazeBot.getInitial();
         states.push(initial);
-        
 
-        while(!states.empty())
+        while(!states.empty()) 
         {
             State current = states.pop();
             exploredStates.add(current);
