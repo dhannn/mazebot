@@ -11,10 +11,24 @@ public class MazeGenerator
     static int size;
     static HashSet<CellNode> visited = new HashSet<CellNode>();
     static Stack<CellNode> stack = new Stack<CellNode>();
+    static double density = 1.0;
 
     static Random random = new Random();
 
     private final static int NUM_DIR = 4; 
+
+    public static MazeGraph generate(int size, double density)
+    {
+        visited = new HashSet<CellNode>();
+        stack = new Stack<CellNode>();
+        MazeGenerator.density = density;
+
+        MazeGenerator.size = (size + 1) / 2;
+        mazegraph = new MazeGraph((size + 1) / 2);
+        randomDFS();
+
+        return mazegraph;
+    }
 
     public static MazeGraph generate(int size)
     {
@@ -46,6 +60,13 @@ public class MazeGenerator
                 CellNode neighbor = choose(neighbors);
                 current.edges.add(neighbor);
                 neighbor.edges.add(current);
+
+                if (shouldConnect())
+                {
+                    CellNode another = choose(neighbors);
+                    current.edges.add(another);
+                    another.edges.add(current);
+                }
 
                 visited.add(neighbor);
                 stack.push(neighbor);
@@ -94,6 +115,13 @@ public class MazeGenerator
         };
 
         return conditions[direction];
+    }
+
+    private static boolean shouldConnect()
+    {
+        double test = random.nextDouble();
+
+        return test > density;
     }
 
     private static CellNode getRandomCell()

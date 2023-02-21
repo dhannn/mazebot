@@ -20,8 +20,8 @@ public class Test_MazeView extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        final int SIZE = 64;
-        MazeGraph mazegraph = MazeGenerator.generate(SIZE);
+        final int SIZE = 32;
+        MazeGraph mazegraph = MazeGenerator.generate(SIZE, 0);
         Maze maze = GraphToCell.mazegraphToCell(mazegraph);
 
         int initRow = maze.getInitialCell().getRow();
