@@ -1,5 +1,6 @@
 package core.maze;
 
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.BufferedReader;
@@ -9,9 +10,9 @@ import java.io.IOException;
 public class Maze 
 {
     Cell[][] maze;
-    @Setter int size;
-    @Setter Cell initialCell;
-    @Setter Cell goalCell;
+    @Getter @Setter int size;
+    @Getter @Setter Cell initialCell;
+    @Getter @Setter Cell goalCell;
     
     public final static int LEFT  =   0;
     public final static int UP    =   1;

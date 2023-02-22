@@ -8,6 +8,7 @@ import core.search.action.*;
 @SuppressWarnings("unused")
 public class MazeBot 
 {
+    private Maze maze;
     private State initial;
     private State goal;
     private SearchStrategy searchStrategy;
@@ -23,8 +24,8 @@ public class MazeBot
     public MazeBot(Maze maze, SearchStrategy searchStrategy)
     {
         this.maze = maze;
-        this.initial = maze.getInitialState();
-        this.goal = maze.getGoalState();
+        this.initial = new State(maze.getInitialCell(), null);
+        this.goal = new State(maze.getGoalCell(), null);
         this.searchStrategy = searchStrategy;
     }
 
@@ -44,5 +45,7 @@ public class MazeBot
      * @param action
      * @return
      */
-    public static State next(State state, Action action) {return action.act(state);}
+    public static State next(State state, Action action) {
+        return action.act(state);
+    }
 }

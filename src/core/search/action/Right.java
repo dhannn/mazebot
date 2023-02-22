@@ -6,7 +6,7 @@ import core.search.State;
 public class Right extends Action
 {
     @Override
-    public void act(State state)
+    public State act(State state)
     {
         State temp = new State(state.getBotLocation(), state.getPredecessor());
 
