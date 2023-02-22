@@ -43,6 +43,8 @@ public class Maze
             }
             row++;
         } while ((line = reader.readLine()) != null);
+
+        reader.close();
     }
 
     public Cell getCell(int row, int col)
