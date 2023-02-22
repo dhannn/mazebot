@@ -5,7 +5,7 @@ import core.maze.Cell.Type;
 import core.maze.generator.GraphToCell;
 import core.maze.generator.MazeGenerator;
 import core.maze.generator.MazeGraph;
-import view.MazeView;
+import view.MazeComponent;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,7 +21,7 @@ public class Test_MazeView extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        final int SIZE = 32;
+        final int SIZE = 16;
         MazeGraph mazegraph = MazeGenerator.generate(SIZE, 1);
         Maze maze = GraphToCell.mazegraphToCell(mazegraph);
 
@@ -31,7 +31,7 @@ public class Test_MazeView extends Application
         int goalCol = maze.getGoalCell().getCol();
         
         Type[][] types = maze.getCellTypes();
-        MazeView mazeview = new MazeView(types, SIZE);
+        MazeComponent mazeview = new MazeComponent(types, SIZE);
         mazeview.setInitial(initRow, initCol);
         mazeview.setGoal(goalRow, goalCol);
 

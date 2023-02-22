@@ -5,13 +5,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class MazeView extends GridPane
+public class MazeComponent extends GridPane
 {
     private static final int GRID_SIZE = 500;
     private final double CELL_SIZE;
     Rectangle[][] mazecells;
 
-    public MazeView(Type[][] maze, int size)
+    public MazeComponent(Type[][] maze, int size)
     {
         CELL_SIZE = ((double) GRID_SIZE) / size;
         setMinSize(GRID_SIZE, GRID_SIZE);
