@@ -44,7 +44,5 @@ public class MazeBot
      * @param action
      * @return
      */
-    public static State next(State state, Action action) {
-            return action.act(state);
-    }
+    public static State next(State state, Action action) {return action.act(state);}
 }
