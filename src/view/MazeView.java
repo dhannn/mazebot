@@ -1,20 +1,19 @@
 package view;
 
 import core.maze.Cell.Type;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class MazeView extends GridPane
 {
-    private static final int GRID_SIZE = 600;
-    private final int CELL_SIZE;
+    private static final int GRID_SIZE = 500;
+    private final double CELL_SIZE;
     Rectangle[][] mazecells;
 
     public MazeView(Type[][] maze, int size)
     {
-        CELL_SIZE = GRID_SIZE / size;
+        CELL_SIZE = ((double) GRID_SIZE) / size;
         setMinSize(GRID_SIZE, GRID_SIZE);
         setGridLinesVisible(true);
         mazecells = new Rectangle[size][size];

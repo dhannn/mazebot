@@ -1,13 +1,15 @@
 package core.search;
 
 import core.maze.Cell;
+import core.maze.Cell.Type;
 import lombok.Getter;
+import lombok.Setter;
 
 @SuppressWarnings("unused")
 public class State 
 {
-    @Getter private Cell botLocation;
-    @Getter private State predecessor;
+    @Getter @Setter private Cell botLocation;
+    @Getter @Setter private State predecessor;
     private Action action;
 
     /**
@@ -15,9 +17,10 @@ public class State
      * @param cell
      * @param predecessor
      */
-    public State(Cell cell, Action action, State predecessor)
+    public State(Cell cell, State predecessor)
     {
-
+        this.botLocation = cell;
+        this.predecessor = predecessor;
     }
 
     public State(Cell cell)
@@ -32,6 +35,10 @@ public class State
      */
     public static boolean isValid(State state)
     {
+        if(state.getBotLocation().getType() == Type.SPACE) {
+            return true;
+        }
+
         return false;
     }
 
@@ -39,10 +46,14 @@ public class State
      * Checks if the given state is a goal state
      * @param state
      * @param goalCell
-     * @return {@code true} if valid, {@code false} otherwise
+     * @return {@code true} if is goal, {@code false} otherwise
      */
     public static boolean isGoal(State state, Cell goalCell)
     {
+        if(state.getBotLocation() == goalCell) {
+            return true;
+        }
+
         return false;
     }
 }

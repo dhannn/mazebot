@@ -1,6 +1,7 @@
 package core.maze;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class Cell 
 {
@@ -17,8 +18,8 @@ public class Cell
         }
     }
 
-    @Getter private int row;
-    @Getter private int col;
+    @Getter @Setter private int row;
+    @Getter @Setter private int col;
     private Type type;
     
     public Cell() {}
