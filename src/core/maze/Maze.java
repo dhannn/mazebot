@@ -1,7 +1,7 @@
 package core.maze;
 
-import core.maze.Cell.Type;
 import lombok.Getter;
+import core.maze.Cell.Type;
 import lombok.Setter;
 
 import java.io.BufferedReader;

@@ -6,7 +6,7 @@ import core.search.State;
 public class Up extends Action
 {
     @Override
-    public void act(State state) 
+    public State act(State state) 
     {
         State temp = new State(state.getBotLocation(), state.getPredecessor());
 
@@ -16,5 +16,7 @@ public class Up extends Action
             state.setPredecessor(state);
             state.getBotLocation().setRow(state.getBotLocation().getRow() - 1);
         }
+
+        return temp;
     }
 }

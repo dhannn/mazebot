@@ -11,6 +11,7 @@ public class MazeBot
 {
     @Getter private State initial;
     @Getter private State goal;
+    private Maze maze;
     private SearchStrategy searchStrategy;
     private final Action[] ACTION = {
         new Left(), new Up(), new Right(), new Down()};
@@ -23,7 +24,10 @@ public class MazeBot
      */
     public MazeBot(Maze maze, SearchStrategy searchStrategy)
     {
-
+        this.maze = maze;
+        this.initial = new State(maze.getInitialCell(), null);
+        this.goal = new State(maze.getGoalCell(), null);
+        this.searchStrategy = searchStrategy;
     }
 
     public static ArrayList<State> getNextStates(State state)
@@ -51,8 +55,8 @@ public class MazeBot
      */
     public void search()
     {
-
-    }   
+        searchStrategy.search();
+    }
 
     /**
      * This function gets the next state by invoking the {@code act()} method
@@ -61,8 +65,7 @@ public class MazeBot
      * @param action
      * @return
      */
-    public static State next(State state, Action action)
-    {
-        return null;
+    public static State next(State state, Action action) {
+        return action.act(state);
     }
 }
