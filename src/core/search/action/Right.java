@@ -12,7 +12,7 @@ public class Right extends Action
 
         temp.getBotLocation().setCol(temp.getBotLocation().getCol() + 1);
 
-        if (state.isValid(temp)) {
+        if (State.isValid(temp)) {
             state.setPredecessor(state);
             state.getBotLocation().setCol(state.getBotLocation().getCol() + 1);
         }
