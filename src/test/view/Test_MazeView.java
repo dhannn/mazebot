@@ -9,6 +9,7 @@ import view.MazeView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Test_MazeView extends Application
 {
@@ -20,8 +21,8 @@ public class Test_MazeView extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        final int SIZE = 32;
-        MazeGraph mazegraph = MazeGenerator.generate(SIZE, 0);
+        final int SIZE = 64;
+        MazeGraph mazegraph = MazeGenerator.generate(SIZE, 1);
         Maze maze = GraphToCell.mazegraphToCell(mazegraph);
 
         int initRow = maze.getInitialCell().getRow();
@@ -35,7 +36,11 @@ public class Test_MazeView extends Application
         mazeview.setGoal(goalRow, goalCol);
 
         Scene scene = new Scene(mazeview);
-        mazeview.setVisible(true);
+        mazeview.setLayoutX(50);
+        mazeview.setLayoutY(50);
+
+        stage.setWidth(1200);
+        stage.setHeight(800);
         stage.setScene(scene);
         stage.show();
     }
