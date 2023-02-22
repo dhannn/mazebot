@@ -22,7 +22,10 @@ public class MazeBot
      */
     public MazeBot(Maze maze, SearchStrategy searchStrategy)
     {
-
+        this.maze = maze;
+        this.initial = maze.getInitialState();
+        this.goal = maze.getGoalState();
+        this.searchStrategy = searchStrategy;
     }
 
     /**
@@ -31,7 +34,7 @@ public class MazeBot
      */
     public void search()
     {
-
+        searchStrategy.search();
     }
 
     /**
@@ -41,8 +44,5 @@ public class MazeBot
      * @param action
      * @return
      */
-    public static State next(State state, Action action)
-    {
-        return null;
-    }
+    public static State next(State state, Action action) {return action.act(state);}
 }
