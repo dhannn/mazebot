@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Maze 
 {
     Cell[][] maze;
-    @Setter int size;
+    @Getter @Setter int size;
     @Getter @Setter Cell initialCell;
     @Getter @Setter Cell goalCell;
     
@@ -29,10 +29,10 @@ public class Maze
     public Maze(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line = reader.readLine();
-        size = line.length();
+        size = Integer.parseInt(line);
         maze = new Cell[size][size];
         int row = 0;
-        do {
+        while ((line = reader.readLine()) != null) {
             for (int col = 0; col < size; col++) {
                 char c = line.charAt(col);
                 Cell.Type type = c == '#' ? Cell.Type.WALL : Cell.Type.SPACE;
@@ -44,7 +44,7 @@ public class Maze
                 }
             }
             row++;
-        } while ((line = reader.readLine()) != null);
+        };
 
         reader.close();
     }
@@ -90,19 +90,19 @@ public class Maze
 
                 if (current == initialCell)
                 {
-                    str.append("S ");
+                    str.append("S");
                     continue;
                 }
                 
                 if (current == goalCell)
                 {
-                    str.append("G ");
+                    str.append("G");
                     continue;
                 }
 
 
                 Cell.Type type = current.getType();
-                str.append(type.strRepresentation + " ");
+                str.append(type.strRepresentation + "");
             }
 
             str.append("\n");
