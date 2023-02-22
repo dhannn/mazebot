@@ -6,7 +6,6 @@ import core.maze.Maze;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -75,18 +74,19 @@ public class LoadMazeView extends VBox
         btnLoad.setOnMouseClicked(e -> {
             String filename = txtFilename.getText();
             try {
+                // TODO: Extract this to the controller
                 Maze maze = new Maze(filename);
-                System.out.println(maze);
+                System.out.println(filename +" Maze: \n" + maze);
                 
                 MazeComponent mazeComponent = new MazeComponent(maze.getCellTypes(), maze.getSize());
                 getChildren().add(mazeComponent);
             } catch (IOException e1) {
-                Alert alert = new Alert(AlertType.ERROR, "Make sure you have the right path!");
+                Alert alert = new Alert(AlertType.ERROR, "Make sure you have the right path.");
                 alert.setTitle("File not found");
-                alert.setHeaderText("We cannot find maze! 😭");
+                alert.setHeaderText("We cannot find maze!");
                 alert.show();
 
-                e1.printStackTrace();
+                System.err.println("The maze file does not exist.");
             }
         });;
     }
