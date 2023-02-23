@@ -48,6 +48,11 @@ public class AnimationView extends Pane
         styleAlgorithms();
 
         btnStart = new Button("Start");
+        btnStart.setOnMouseClicked( e -> 
+            { maze.search.search(); 
+                maze.search.reconstructPath();
+                maze.playAnim(); }
+        );
         this.getChildren().add(btnStart);
         styleStart();
 

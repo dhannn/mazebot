@@ -8,6 +8,10 @@ import core.maze.Maze;
 import core.maze.generator.GraphToCell;
 import core.maze.generator.MazeGenerator;
 import core.maze.generator.MazeGraph;
+import core.search.MazeBot;
+import core.search.SearchStrategy;
+import core.search.State;
+import core.search.strategy.DFS;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,9 +28,11 @@ public class Test_AnimationView  extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        final int SIZE = 16;
-        MazeGraph mazegraph = MazeGenerator.generate(SIZE, 1);
-        Maze maze = GraphToCell.mazegraphToCell(mazegraph);
+        final int SIZE = 5;
+        // MazeGraph mazegraph = MazeGenerator.generate(SIZE, 1);
+        // Maze maze = GraphToCell.mazegraphToCell(mazegraph);
+        Maze maze = new Maze("dat\\maze.txt");
+        MazeBot mazeBot = new MazeBot(maze);
 
         int initRow = maze.getInitialCell().getRow();
         int initCol = maze.getInitialCell().getCol();
@@ -44,13 +50,20 @@ public class Test_AnimationView  extends Application
         algos.add("A* Search");
 
         AnimationView anim = new AnimationView(mazeview, algos);
-
+        
+        // mazeBot.search();
+        SearchStrategy searchStrategy = new DFS(new State(maze.getInitialCell()), new State(maze.getGoalCell()));
+        searchStrategy.attach(mazeview);
+        
         Scene scene = new Scene(anim);
-
+        
         stage.setTitle("MazeBot");
         stage.setWidth(1200);
         stage.setHeight(800);
         stage.setScene(scene);
         stage.show();
+        // searchStrategy.search();
+        // searchStrategy.reconstructPath();
+        // mazeview.playAnim();
     }
 }

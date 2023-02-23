@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Stack;
 
+import lombok.Getter;
 import utils.Observable;
 import utils.Observer;
 
@@ -12,7 +14,10 @@ public abstract class SearchStrategy implements Observable
 {
     private ArrayList<Observer> observers;
     
-    protected List<State> solutionPath;
+    @Getter protected State lastExpanded;
+    @Getter protected ArrayList<State> nodesVisited;
+
+    @Getter protected Stack<State> solutionPath;
     protected int numExplored;
     protected HashSet<State> exploredStates;
     protected Hashtable<State, Integer> orderOfStates;
@@ -47,7 +52,7 @@ public abstract class SearchStrategy implements Observable
 
     public void notifyObservers()
     {
-        observers.forEach(observer -> observer.notify());
+        observers.forEach(observer -> observer.update() );
     }
 
     public abstract void search();

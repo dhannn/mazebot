@@ -100,7 +100,6 @@ public class Maze
                     continue;
                 }
 
-
                 Cell.Type type = current.getType();
                 str.append(type.strRepresentation + "");
             }

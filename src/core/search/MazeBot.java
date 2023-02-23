@@ -30,7 +30,7 @@ public class MazeBot
      */
     public MazeBot(Maze maze)
     {
-        this.maze = maze;
+        MazeBot.maze = maze;
         MazeBot.size = maze.getSize();
         this.initial = new State(maze.getInitialCell(), null);
         this.goal = new State(maze.getGoalCell(), null);

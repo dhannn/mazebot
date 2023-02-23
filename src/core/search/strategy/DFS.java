@@ -6,6 +6,7 @@ import java.util.Stack;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
+import lombok.Getter;
 
 public class DFS extends SearchStrategy 
 {
@@ -26,25 +27,28 @@ public class DFS extends SearchStrategy
 
         while(!states.empty()) 
         {
-            State current = states.pop();
-            exploredStates.add(current);
+            lastExpanded = states.pop();
+            exploredStates.add(lastExpanded);
             
-            ArrayList<State> unexplored = getUnexploredStates(current);
+            ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
 
-            if (State.isGoal(current, goal.getBotLocation()))
+            if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
-                goal = current;
+                goal = lastExpanded;
                 isFound = true;
                 break;
             }
-
+            
             if (unexplored.size() == 0)
                 continue;
             
-            states.add(current);
+            notifyObservers();
+            states.add(lastExpanded);
             states.add(unexplored.get(0));
-            
         }
+
+        nodesVisited.removeAll(nodesVisited);
+        nodesVisited.forEach((State state) -> {System.out.println(state.getBotLocation());});
     }
 
     @Override
@@ -60,6 +64,8 @@ public class DFS extends SearchStrategy
 
             if (current.getPredecessor() != null)
                 current = current.getPredecessor();
+
+            notifyObservers();
         }
 
         solutionPath.add(current);
@@ -75,7 +81,8 @@ public class DFS extends SearchStrategy
             if (!exploredStates.contains(state))
                 unexplored.add(state);
         }
-
+        
+        nodesVisited = unexplored;
         return unexplored;
     }
 }
