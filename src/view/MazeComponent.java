@@ -12,7 +12,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import utils.Observable;
@@ -35,7 +34,7 @@ public class MazeComponent extends GridPane implements Observer
     {
         CELL_SIZE = ((double) GRID_SIZE) / size;
         setMinSize(GRID_SIZE, GRID_SIZE);
-        setGridLinesVisible(true);
+        // setGridLinesVisible(true);
         mazecells = new Rectangle[size][size];
 
         timeline.setRate((size / 64f) * 60);
@@ -50,7 +49,7 @@ public class MazeComponent extends GridPane implements Observer
                 mazecells[i][j] = rect;
 
                 if (cell == Type.SPACE){
-                    rect.setFill(Color.WHITE);
+                    rect.setFill(Color.LIGHT_BLUE);
                 } else {
                     rect.setFill(Color.BLACK);
                 }
@@ -91,7 +90,7 @@ public class MazeComponent extends GridPane implements Observer
         if (mazecells[row][col].getFill() !=  Color.RED && mazecells[row][col].getFill() != Color.GREEN)
         {
             KeyValue kv1 = new KeyValue(mazecells[row][col].fillProperty(), Color.BLUE, Interpolator.DISCRETE);
-            KeyValue kv2 = new KeyValue(mazecells[row][col].fillProperty(), Color.YELLOW, Interpolator.DISCRETE);
+            KeyValue kv2 = new KeyValue(mazecells[row][col].fillProperty(), Color.ORANGE, Interpolator.DISCRETE);
             KeyFrame kf1 = new KeyFrame(Duration.seconds(frameVisited), kv1);
             KeyFrame kf2 = new KeyFrame(Duration.seconds(frameVisited + 1), kv2);
             timeline.getKeyFrames().add(kf1);
@@ -106,7 +105,7 @@ public class MazeComponent extends GridPane implements Observer
             if (mazecells[row2][col2].getFill() == Color.GREEN) 
                 continue;
             
-            KeyValue kvs = new KeyValue(mazecells[row2][col2].fillProperty(), Color.WHITE, Interpolator.DISCRETE);
+            KeyValue kvs = new KeyValue(mazecells[row2][col2].fillProperty(), Color.LIGHT_BLUE, Interpolator.DISCRETE);
             KeyValue kve = new KeyValue(mazecells[row2][col2].fillProperty(), Color.BLUE, Interpolator.DISCRETE);
             KeyFrame kfs = new KeyFrame(Duration.seconds(frameExpanded), kvs);
             KeyFrame kfe = new KeyFrame(Duration.seconds(frameExpanded + 1), kve);
@@ -120,8 +119,8 @@ public class MazeComponent extends GridPane implements Observer
             int col3 = search.getSolutionPath().peek().getBotLocation().getCol();
             if (mazecells[row3][col3].getFill() != Color.GREEN) 
             {
-                KeyValue kvs = new KeyValue(mazecells[row3][col3].fillProperty(), Color.YELLOW, Interpolator.DISCRETE);
-                KeyValue kve = new KeyValue(mazecells[row3][col3].fillProperty(), Color.GREEN, Interpolator.DISCRETE);
+                KeyValue kvs = new KeyValue(mazecells[row3][col3].fillProperty(), Color.ORANGE, Interpolator.DISCRETE);
+                KeyValue kve = new KeyValue(mazecells[row3][col3].fillProperty(), Color.LIGHT_GREEN, Interpolator.DISCRETE);
                 KeyFrame kfs = new KeyFrame(Duration.seconds(frameExpanded), kvs);
                 KeyFrame kfe = new KeyFrame(Duration.seconds(frameExpanded + 1), kve);
                 timeline.getKeyFrames().add(kfs);
