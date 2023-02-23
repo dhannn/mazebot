@@ -1,21 +1,19 @@
 package core.search.action;
 
+import core.maze.Cell;
+import core.maze.Cell.Type;
 import core.search.Action;
+import core.search.MazeBot;
 import core.search.State;
 
 public class Right extends Action
 {
     @Override
-    public State act(State state)
+    public State act(State state, int size, Type maze[][])
     {
-        State temp = new State(state.getBotLocation(), state.getPredecessor());
-
-        temp.getBotLocation().setCol(temp.getBotLocation().getCol() + 1);
-
-        if (State.isValid(temp)) {
-            state.setPredecessor(state);
-            state.getBotLocation().setCol(state.getBotLocation().getCol() + 1);
-        }
+        State temp = new State(state.getBotLocation(), state);
+        Cell newBotLocation = temp.getBotLocation().move(MazeBot.RIGHT, size, maze);
+        temp.setBotLocation(newBotLocation);
 
         return temp;
     }

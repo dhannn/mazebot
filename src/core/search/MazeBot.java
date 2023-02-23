@@ -5,16 +5,22 @@ import java.util.ArrayList;
 import core.maze.Maze;
 import core.search.action.*;
 import lombok.Getter;
+import lombok.Setter;
 
-@SuppressWarnings("unused")
 public class MazeBot 
 {
+    public final static int LEFT = 0;
+    public final static int UP = 1;
+    public final static int RIGHT = 2;
+    public final static int DOWN = 3;
+
     @Getter private State initial;
     @Getter private State goal;
-    private Maze maze;
-    private SearchStrategy searchStrategy;
-    private final Action[] ACTION = {
+    private static Maze maze;
+    @Setter private SearchStrategy searchStrategy;
+    private final static Action[] ACTION = {
         new Left(), new Up(), new Right(), new Down()};
+    private static int size;
 
     /**
      * This constructor will initialize the initial and goal state from the maze.
@@ -22,31 +28,27 @@ public class MazeBot
      * @param maze
      * @param searchStrategy
      */
-    public MazeBot(Maze maze, SearchStrategy searchStrategy)
+    public MazeBot(Maze maze)
     {
         this.maze = maze;
+        MazeBot.size = maze.getSize();
         this.initial = new State(maze.getInitialCell(), null);
         this.goal = new State(maze.getGoalCell(), null);
-        this.searchStrategy = searchStrategy;
     }
 
     public static ArrayList<State> getNextStates(State state)
     {
-        ArrayList<Action> actions = MazeBot.getValidActions(state);
         ArrayList<State> states = new ArrayList<State>();
 
-        for (Action action: actions)
+        for (Action action: ACTION)
         {
             State nextState = MazeBot.next(state, action);
-            states.add(nextState);
+
+            if (State.isValid(nextState))
+                states.add(nextState);
         }
 
         return states;
-    }
-
-    private static ArrayList<Action> getValidActions(State state)
-    {
-        return null;
     }
 
     /**
@@ -66,6 +68,6 @@ public class MazeBot
      * @return
      */
     public static State next(State state, Action action) {
-        return action.act(state);
+        return action.act(state, size, maze.getCellTypes());
     }
 }

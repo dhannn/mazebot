@@ -31,17 +31,19 @@ public class DFS extends SearchStrategy
             
             ArrayList<State> unexplored = getUnexploredStates(current);
 
-            if (unexplored.size() == 0)
-                continue;
-            
-            states.addAll(unexplored);
-            
             if (State.isGoal(current, goal.getBotLocation()))
             {
                 goal = current;
                 isFound = true;
                 break;
             }
+
+            if (unexplored.size() == 0)
+                continue;
+            
+            states.add(current);
+            states.add(unexplored.get(0));
+            
         }
     }
 
@@ -55,7 +57,9 @@ public class DFS extends SearchStrategy
         while (!current.equals(initial))
         {
             solutionPath.add(current);
-            current = current.getPredecessor();
+
+            if (current.getPredecessor() != null)
+                current = current.getPredecessor();
         }
 
         solutionPath.add(current);

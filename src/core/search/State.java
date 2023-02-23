@@ -1,6 +1,7 @@
 package core.search;
 
 import core.maze.Cell;
+import core.maze.NullCell;
 import core.maze.Cell.Type;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,6 @@ public class State
 {
     @Getter @Setter private Cell botLocation;
     @Getter @Setter private State predecessor;
-    private Action action;
 
     /**
      * Slay
@@ -35,7 +35,7 @@ public class State
      */
     public static boolean isValid(State state)
     {
-        if(state.getBotLocation().getType() == Type.SPACE) {
+        if(state.getBotLocation().getType() == Type.SPACE && !(state.getBotLocation() instanceof NullCell)) {
             return true;
         }
 
@@ -50,10 +50,24 @@ public class State
      */
     public static boolean isGoal(State state, Cell goalCell)
     {
-        if(state.getBotLocation() == goalCell) {
+        if(state.getBotLocation().equals(goalCell)) {
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public boolean equals(Object obj) 
+    {
+        State other = (State) obj;
+        return botLocation.equals(other.botLocation);
+    }
+
+    @Override
+    public int hashCode() 
+    {
+        int index = botLocation.getCol() * 64 + botLocation.getRow(); 
+        return Integer.valueOf(index).hashCode();
     }
 }
