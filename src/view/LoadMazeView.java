@@ -1,14 +1,9 @@
 package view;
 
-import java.io.IOException;
-
-import core.maze.Maze;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -52,6 +47,11 @@ public class LoadMazeView extends VBox
         setSpacing(SPACING);
     }
 
+    public String getMazefile()
+    {
+        return txtFilename.getText();
+    }
+
     private void styleFilename()
     {
         lblFilename.setLayoutY(LBL_FILENAME_Y);
@@ -71,23 +71,6 @@ public class LoadMazeView extends VBox
         btnLoad.setStyle("-fx-font: 20 Arial; -fx-font-weight: bold; -fx-background-color: #1a1a1a; -fx-border-style: solid; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 20, 0, 0, 0); -fx-background-radius: 10px; -fx-border-radius: 10px;");
         btnLoad.setMinWidth(LOAD_WIDTH);
         btnLoad.setMinHeight(LOAD_HEIGHT);
-        btnLoad.setOnMouseClicked(e -> {
-            String filename = txtFilename.getText();
-            try {
-                // TODO: Extract this to the controller
-                Maze maze = new Maze(filename);
-                System.out.println(filename +" Maze: \n" + maze);
-                
-                MazeComponent mazeComponent = new MazeComponent(maze.getCellTypes(), maze.getSize());
-                getChildren().add(mazeComponent);
-            } catch (IOException e1) {
-                Alert alert = new Alert(AlertType.ERROR, "Make sure you have the right path.");
-                alert.setTitle("File not found");
-                alert.setHeaderText("We cannot find maze!");
-                alert.show();
-
-                System.err.println("The maze file does not exist.");
-            }
-        });;
+        btnLoad.setOnMouseClicked(e -> Controller.loadMaze() );
     }
 }

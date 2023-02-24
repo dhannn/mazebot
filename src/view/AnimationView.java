@@ -13,6 +13,7 @@ public class AnimationView extends Pane
 {
     private static final int CMB_ALGORITHM_HEIGHT = 50;
     private static final int CMB_ALGORITHM_WIDTH = 400;
+
     private MazeComponent maze;
     private ComboBox<String> cmbAlgorithms;
     private Label lblAlgorithms;
@@ -78,6 +79,8 @@ public class AnimationView extends Pane
         lblAlgorithms.setLayoutX(ALGORITHM_X);
         cmbAlgorithms.setLayoutY(CMB_ALGORITHM_Y);
         lblAlgorithms.setLayoutY(LBL_ALGORITHM_Y);
+        
+        cmbAlgorithms.setOnAction(e -> Controller.getChosenAlgorithm() );
     }
 
     private void styleStart()
@@ -89,5 +92,10 @@ public class AnimationView extends Pane
         btnStart.setLayoutY(START_Y);
         btnStart.setMinWidth(START_WIDTH);
         btnStart.setMinHeight(START_HEIGHT);
+    }
+
+    public String getChosenAlgorithm()
+    {
+        return cmbAlgorithms.getValue();
     }
 }

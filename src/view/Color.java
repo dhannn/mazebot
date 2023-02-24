@@ -13,5 +13,6 @@ public class Color
     public final static Paint LIGHT_GREEN = javafx.scene.paint.Color.valueOf("#94dbb3");    
     public final static Paint LIGHT_BLUE = javafx.scene.paint.Color.valueOf("#b4cee4");    
     public final static Paint TURQUOISE = javafx.scene.paint.Color.valueOf("#e0f2e9");    
-    public final static Paint BLACK = javafx.scene.paint.Color.valueOf("#2a2d34");    
+    public final static Paint BLACK = javafx.scene.paint.Color.valueOf("#484538");    
+    public final static Paint WHITE = javafx.scene.paint.Color.valueOf("#ede6f2");    
 }

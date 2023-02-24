@@ -11,6 +11,14 @@ import lombok.Getter;
 public class DFS extends SearchStrategy 
 {
     Stack<State> states;
+    @Getter String commonName = "Depth-First Search";
+
+    public DFS()
+    {
+        states = new Stack<State>();
+        solutionPath = new Stack<State>();
+        goal = null;
+    }
 
     public DFS(State initial, State goal) 
     {
@@ -29,6 +37,8 @@ public class DFS extends SearchStrategy
         {
             lastExpanded = states.pop();
             exploredStates.add(lastExpanded);
+
+            System.out.println("Exploring State " + lastExpanded.getBotLocation());
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
 

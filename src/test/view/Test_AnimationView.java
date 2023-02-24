@@ -5,13 +5,9 @@ import core.maze.Cell.Type;
 import java.util.ArrayList;
 
 import core.maze.Maze;
-import core.maze.generator.GraphToCell;
-import core.maze.generator.MazeGenerator;
-import core.maze.generator.MazeGraph;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
-import core.search.strategy.BFS;
 import core.search.strategy.DFS;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -29,11 +25,11 @@ public class Test_AnimationView  extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        final int SIZE = 16;
+        final int SIZE = 64;
         // MazeGraph mazegraph = MazeGenerator.generate(SIZE, 1);
         // Maze maze = GraphToCell.mazegraphToCell(mazegraph);
-        Maze maze = new Maze("dat\\testcases\\maze16_2.txt");
-        MazeBot mazeBot = new MazeBot(maze);
+        Maze maze = new Maze("dat\\testcases\\maze64_10.txt");
+        // MazeBot mazeBot = new MazeBot(maze);
 
         int initRow = maze.getInitialCell().getRow();
         int initCol = maze.getInitialCell().getCol();

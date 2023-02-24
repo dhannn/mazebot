@@ -13,6 +13,7 @@ import lombok.Getter;
 public class BFS extends SearchStrategy 
 {
     Queue<State> states;
+    @Getter String commonName = "Breadth-First Search";
 
     public BFS(State initial, State goal) 
     {
