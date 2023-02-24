@@ -45,7 +45,7 @@ public class DFS extends SearchStrategy
 
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
-                goal = lastExpanded;
+                extractedGoal = lastExpanded;
                 isFound = true;
                 break;
             }
@@ -67,7 +67,7 @@ public class DFS extends SearchStrategy
     {
         if (extractedGoal == null) return;
 
-        State current = goal;
+        State current = extractedGoal;
 
         while (!current.equals(initial))
         {

@@ -72,6 +72,19 @@ public class MazeComponent extends GridPane implements Observer
         timeline.play();
     }
 
+    public void pauseAnim()
+    {
+        timeline.pause();
+    }
+
+    public void stepAnim() 
+    {
+        Duration current = timeline.getCurrentTime();
+        Duration next = current.add(Duration.seconds(1));
+
+        timeline.jumpTo(next);
+    }
+
     @Override
     public void link(Observable observable) 
     {

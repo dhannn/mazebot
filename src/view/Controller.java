@@ -20,7 +20,8 @@ public class Controller
     @Getter private static Scene active;
     private static LoadMazeView loadMazeView;
     private static AnimationView animationView;
-
+    
+    private static StatsComponent statsComponent;
     private static MazeComponent mazeComponent;
 
     private static SearchStrategy[] searches = {new DFS()};
@@ -45,6 +46,7 @@ public class Controller
             int size = maze.getSize();
 
             mazeComponent = new MazeComponent(types, size);
+            statsComponent = new StatsComponent(size);
             
             int goalcol = maze.getGoalCell().getCol();
             int goalrow = maze.getGoalCell().getRow();
@@ -52,7 +54,7 @@ public class Controller
             int initrow = maze.getInitialCell().getRow();
             mazeComponent.setInitial(initrow, initcol);
             mazeComponent.setGoal(goalrow, goalcol);
-            animationView = new AnimationView(mazeComponent, getAlgorithmNames());
+            animationView = new AnimationView(mazeComponent, statsComponent, getAlgorithmNames());
             active.setRoot(animationView);
         } catch (IOException e) {
             Alert alert = new Alert(AlertType.ERROR, "Make sure you have the right path.");
@@ -86,6 +88,7 @@ public class Controller
         chosenSearch.setGoal(goal);
         mazeBot.setSearchStrategy(chosenSearch);
         chosenSearch.attach(mazeComponent);
+        chosenSearch.attach(statsComponent);
     }
 
     private static ArrayList<String> getAlgorithmNames()

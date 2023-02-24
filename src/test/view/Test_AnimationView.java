@@ -45,7 +45,7 @@ public class Test_AnimationView  extends Application
         algos.add("Breadth-First Search");
         algos.add("A* Search");
 
-        AnimationView anim = new AnimationView(mazeview, algos);
+        AnimationView anim = new AnimationView(mazeview, null, algos);
         
         // mazeBot.search();
         SearchStrategy searchStrategy = new DFS(new State(maze.getInitialCell()), new State(maze.getGoalCell()));
