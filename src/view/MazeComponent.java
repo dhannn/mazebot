@@ -1,5 +1,7 @@
 package view;
 
+import java.util.HashMap;
+
 import core.maze.Cell.Type;
 import core.search.SearchStrategy;
 import core.search.State;
@@ -8,8 +10,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import utils.Color;
 import utils.Observable;
 import utils.Observer;
 
@@ -21,14 +25,14 @@ public class MazeComponent extends GridPane implements Observer
     SearchStrategy search;
 
     Timeline timeline = new Timeline();
-    private int frameExpanded = 0;
-    private int frameVisited = 0;
+    HashMap<KeyValue, Integer> keyToFrame = new HashMap<KeyValue, Integer>();
+    private int frames = 0;
 
     public MazeComponent(Type[][] maze, int size)
     {
         CELL_SIZE = ((double) GRID_SIZE) / size;
         setMinSize(GRID_SIZE, GRID_SIZE);
-        // setGridLinesVisible(true);
+        setGridLinesVisible(true);
         mazecells = new Rectangle[size][size];
 
         timeline.setRate((size / 64f) * 80);
@@ -77,53 +81,51 @@ public class MazeComponent extends GridPane implements Observer
     @Override
     public void update() 
     {
-        int row = search.getLastExpanded().getBotLocation().getRow();
-        int col = search.getLastExpanded().getBotLocation().getCol();
+        animateExpanded();
+        animateVisited();
+        animateSolution();
+        
+        frames++;
+    }
 
-        // System.out.println(mazecells[row][col].getFill());
-        if (mazecells[row][col].getFill() !=  Color.RED && mazecells[row][col].getFill() != Color.GREEN)
-        {
-            KeyValue kv1 = new KeyValue(mazecells[row][col].fillProperty(), Color.LIGHT_BLUE, Interpolator.DISCRETE);
-            KeyValue kv2 = new KeyValue(mazecells[row][col].fillProperty(), Color.LIGHT_ORANGE, Interpolator.DISCRETE);
-            KeyFrame kf1 = new KeyFrame(Duration.seconds(frameVisited), kv1);
-            KeyFrame kf2 = new KeyFrame(Duration.seconds(frameVisited + 1), kv2);
-            timeline.getKeyFrames().add(kf1);
-            timeline.getKeyFrames().add(kf2);
-        }
+    private void animateExpanded() {
+        int lastExpandedRow = search.getLastExpanded().getBotLocation().getRow();
+        int lastExpandedCol = search.getLastExpanded().getBotLocation().getCol();
+        
+        Rectangle cell = mazecells[lastExpandedRow][lastExpandedCol];
+        if (!cell.getFill().equals(Color.GREEN))
+            addKeyValue(Color.ORANGE, cell);
+    }
 
+    private void animateVisited() {
         for (State state: search.getNodesVisited())
         {
+            int row = state.getBotLocation().getRow();
+            int col = state.getBotLocation().getCol();
+
+            Rectangle visitedCell = mazecells[row][col];
             
-            int row2 = state.getBotLocation().getRow();
-            int col2 = state.getBotLocation().getCol();
-            if (mazecells[row2][col2].getFill() == Color.GREEN) 
-                continue;
-            
-            KeyValue kvs = new KeyValue(mazecells[row2][col2].fillProperty(), Color.WHITE, Interpolator.DISCRETE);
-            KeyValue kve = new KeyValue(mazecells[row2][col2].fillProperty(), Color.LIGHT_BLUE, Interpolator.DISCRETE);
-            KeyFrame kfs = new KeyFrame(Duration.seconds(frameExpanded), kvs);
-            KeyFrame kfe = new KeyFrame(Duration.seconds(frameExpanded + 1), kve);
-            timeline.getKeyFrames().add(kfs);
-            timeline.getKeyFrames().add(kfe);
+            if (!visitedCell.getFill().equals(Color.GREEN))
+                addKeyValue(Color.LIGHT_BLUE, visitedCell);
         }
-        
-        
+    }
+
+    private void animateSolution() {
         if (!search.getSolutionPath().isEmpty()) {
-            int row3 = search.getSolutionPath().peek().getBotLocation().getRow();
-            int col3 = search.getSolutionPath().peek().getBotLocation().getCol();
-            if (mazecells[row3][col3].getFill() != Color.GREEN) 
-            {
-                KeyValue kvs = new KeyValue(mazecells[row3][col3].fillProperty(), Color.LIGHT_ORANGE, Interpolator.DISCRETE);
-                KeyValue kve = new KeyValue(mazecells[row3][col3].fillProperty(), Color.LIGHT_GREEN, Interpolator.DISCRETE);
-                KeyFrame kfs = new KeyFrame(Duration.seconds(frameExpanded), kvs);
-                KeyFrame kfe = new KeyFrame(Duration.seconds(frameExpanded + 1), kve);
-                timeline.getKeyFrames().add(kfs);
-                timeline.getKeyFrames().add(kfe);
-            }
+            int row = search.getSolutionPath().peek().getBotLocation().getRow();
+            int col = search.getSolutionPath().peek().getBotLocation().getCol();
             
+            Rectangle solutionCell = mazecells[row][col]; 
+            
+            if (!solutionCell.getFill().equals(Color.GREEN))
+                addKeyValue(Color.LIGHT_GREEN, solutionCell);
         }
-        
-        frameVisited++;
-        frameExpanded++;
+    }
+
+    private void addKeyValue(Paint color, Rectangle cell)
+    {
+        KeyValue keyValue = new KeyValue(cell.fillProperty(), color, Interpolator.DISCRETE);
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(frames), keyValue);
+        timeline.getKeyFrames().add(keyFrame);
     }
 }

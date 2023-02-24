@@ -6,7 +6,6 @@ import core.maze.Cell.Type;
 import lombok.Getter;
 import lombok.Setter;
 
-@SuppressWarnings("unused")
 public class State 
 {
     @Getter @Setter private Cell botLocation;

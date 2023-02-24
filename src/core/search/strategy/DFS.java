@@ -12,6 +12,7 @@ public class DFS extends SearchStrategy
 {
     Stack<State> states;
     @Getter String commonName = "Depth-First Search";
+    State extractedGoal;
 
     public DFS()
     {
@@ -25,7 +26,7 @@ public class DFS extends SearchStrategy
         super(initial, goal);
         states = new Stack<State>();
         solutionPath = new Stack<State>();
-        goal = null;
+        extractedGoal = null;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class DFS extends SearchStrategy
     @Override
     public void reconstructPath() 
     {
-        if (goal == null) return;
+        if (extractedGoal == null) return;
 
         State current = goal;
 

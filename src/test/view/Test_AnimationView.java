@@ -5,7 +5,6 @@ import core.maze.Cell.Type;
 import java.util.ArrayList;
 
 import core.maze.Maze;
-import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
 import core.search.strategy.DFS;
