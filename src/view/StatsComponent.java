@@ -23,6 +23,8 @@ public class StatsComponent extends TextFlow implements Observer
     private static Text txtNumExpandedData;
     private static Text txtNumVisited;
     private static Text txtNumVisitedData;
+    private static Text txtSolution;
+    private static Text txtSolutionData;
 
     private HashSet<State> visited;
     private State lastExpanded = null;
@@ -30,6 +32,7 @@ public class StatsComponent extends TextFlow implements Observer
 
     private int numExpanded = 0;
     private int numVisited = 0;
+    private int numSolution = 0;
 
     private int frames = 0;
 
@@ -40,30 +43,41 @@ public class StatsComponent extends TextFlow implements Observer
         visited = new HashSet<State>();
 
         timeline = new Timeline();
-        timeline.setRate((size / 64f) * 80);
+        timeline.setRate((size / 64f) * 60);
         setLineSpacing(1);
 
         txtNumExpanded = new Text("Number of states expanded");
-        txtNumExpanded.setFill(Color.WHITE);
+        txtNumExpanded.setFill(Color.BLACK);
         txtNumExpanded.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         getChildren().add(txtNumExpanded);
         
         txtNumExpandedData = new Text();
         txtNumExpandedData.setText("\n0 states");
-        txtNumExpandedData.setFill(Color.WHITE);
-        txtNumExpandedData.setFont(Font.font("Arial", 13));
+        txtNumExpandedData.setFill(Color.BLACK);
+        txtNumExpandedData.setFont(Font.font("Arial", 16));
         getChildren().add(txtNumExpandedData);
 
         txtNumVisited = new Text("\n\nNumber of states visited");
-        txtNumVisited.setFill(Color.WHITE);
+        txtNumVisited.setFill(Color.BLACK);
         txtNumVisited.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         getChildren().add(txtNumVisited);
         
         txtNumVisitedData = new Text();
         txtNumVisitedData.setText("\n0 states");
-        txtNumVisitedData.setFill(Color.WHITE);
-        txtNumVisitedData.setFont(Font.font("Arial", 13));
+        txtNumVisitedData.setFill(Color.BLACK);
+        txtNumVisitedData.setFont(Font.font("Arial", 16));
         getChildren().add(txtNumVisitedData);
+
+        txtSolution = new Text("\n\nNumber of states in solution");
+        txtSolution.setFill(Color.BLACK);
+        txtSolution.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        getChildren().add(txtSolution);
+        
+        txtSolutionData = new Text();
+        txtSolutionData.setText("\n0 states");
+        txtSolutionData.setFill(Color.BLACK);
+        txtSolutionData.setFont(Font.font("Arial", 16));
+        getChildren().add(txtSolutionData);
 
         setPadding(new Insets(25));  
     }
@@ -86,6 +100,11 @@ public class StatsComponent extends TextFlow implements Observer
             numExpanded++;
         }
 
+        if (search.getSolutionPath().size() > 0)
+        {
+            numSolution++;
+        }
+
         setText();
         frames++;
     }
@@ -99,7 +118,19 @@ public class StatsComponent extends TextFlow implements Observer
         KeyValue visitedKeyValue = new KeyValue(
             txtNumVisitedData.textProperty(), 
             "\n" + numVisited + " states");
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(frames), expandedKeyValue, visitedKeyValue);
+
+        
+        KeyValue solutionKeyValue = null;
+        if (search.isDone() && !search.isFound()) {
+            solutionKeyValue = new KeyValue(
+            txtSolutionData.textProperty(), 
+            "\nNo solution has been found!");
+        } else {
+            solutionKeyValue = new KeyValue(
+            txtSolutionData.textProperty(), 
+            "\n" + numSolution + " states");
+        }
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(frames), expandedKeyValue, visitedKeyValue, solutionKeyValue);
         timeline.getKeyFrames().add(keyFrame);
     }
 

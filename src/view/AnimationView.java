@@ -12,7 +12,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 
 public class AnimationView extends Pane
@@ -66,8 +65,8 @@ public class AnimationView extends Pane
         stats.setMinHeight(200);
         stats.setLayoutX(ALGORITHM_X);
         stats.setLayoutY(400);
-        stats.setBackground(Background.fill(Color.BLACK));
-
+        stats.setStyle("-fx-background-color: linear-gradient(to bottom right, #f5f5f5, #ededed);" + 
+        "-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 30, 0, -1, -1);");
         styleMaze();
 
         lblAlgorithms = new Label("Algorithm");
@@ -79,6 +78,7 @@ public class AnimationView extends Pane
 
         btnStart = new Button("Start");
         btnStart.setOnMouseClicked( e -> { 
+
             maze.search.search(); 
             maze.search.reconstructPath();
             maze.playAnim();
@@ -161,6 +161,7 @@ public class AnimationView extends Pane
         cmbAlgorithms.setLayoutY(CMB_ALGORITHM_Y);
         lblAlgorithms.setLayoutY(LBL_ALGORITHM_Y);
         
+        cmbAlgorithms.setCursor(Cursor.HAND);
         cmbAlgorithms.setOnAction(e -> Controller.getChosenAlgorithm() );
     }
 
@@ -180,12 +181,16 @@ public class AnimationView extends Pane
     {
         if (isPaused) {
             getChildren().remove(btnPlay);
-            getChildren().add(btnPause);
+
+            if (!getChildren().contains(btnPause))
+                getChildren().add(btnPause);
             maze.playAnim();
             stats.playAnim();
         } else {
             getChildren().remove(btnPause);
-            getChildren().add(btnPlay);
+
+            if (!getChildren().contains(btnPlay))
+                getChildren().add(btnPlay);
             maze.pauseAnim();
             stats.pauseAnim();
         }

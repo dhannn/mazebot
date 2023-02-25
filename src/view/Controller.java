@@ -6,6 +6,7 @@ import core.maze.Cell.Type;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
+import core.search.strategy.BFS;
 import core.search.strategy.DFS;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -24,7 +25,7 @@ public class Controller
     private static StatsComponent statsComponent;
     private static MazeComponent mazeComponent;
 
-    private static SearchStrategy[] searches = {new DFS()};
+    private static SearchStrategy[] searches = {new DFS(), new BFS()};
     private static SearchStrategy chosenSearch;
 
     private static MazeBot mazeBot;

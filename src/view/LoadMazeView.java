@@ -1,9 +1,12 @@
 package view;
 
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,7 +34,13 @@ public class LoadMazeView extends VBox
 
     public LoadMazeView()
     {
-        lblFilename = new Label("Maze Filename");
+        ImageView maizBotLogo = new ImageView(new Image("assets/mAIzbot.png"));
+        maizBotLogo.setFitWidth(550);
+        maizBotLogo.setLayoutY(900);
+        maizBotLogo.setPreserveRatio(true);
+        getChildren().add(maizBotLogo);
+
+        lblFilename = new Label("Enter the filename of the maze");
         txtFilename = new TextField();
         styleFilename();
         getChildren().add(lblFilename);
@@ -71,6 +80,7 @@ public class LoadMazeView extends VBox
         btnLoad.setStyle("-fx-font: 20 Arial; -fx-font-weight: bold; -fx-background-color: #1a1a1a; -fx-border-style: solid; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 20, 0, 0, 0); -fx-background-radius: 10px; -fx-border-radius: 10px;");
         btnLoad.setMinWidth(LOAD_WIDTH);
         btnLoad.setMinHeight(LOAD_HEIGHT);
+        btnLoad.setCursor(Cursor.HAND);
         btnLoad.setOnMouseClicked(e -> Controller.loadMaze() );
     }
 }

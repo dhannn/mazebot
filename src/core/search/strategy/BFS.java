@@ -15,12 +15,20 @@ public class BFS extends SearchStrategy
     Queue<State> states;
     @Getter String commonName = "Breadth-First Search";
 
+    public BFS()
+    {
+        states = new LinkedList<State>();
+        solutionPath = new Stack<State>();
+        extractedGoal = null;
+        isDone = false;
+    }
+
     public BFS(State initial, State goal) 
     {
         super(initial, goal);
         states = new LinkedList<State>();
         solutionPath = new Stack<State>();
-        goal = null;
+        extractedGoal = null;
     }
 
     @Override
@@ -34,32 +42,32 @@ public class BFS extends SearchStrategy
             exploredStates.add(lastExpanded);
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
-
+            
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
-                goal = lastExpanded;
+                extractedGoal = lastExpanded;
                 isFound = true;
                 break;
             }
             
-            if (unexplored.size() == 0)
-                continue;
-            
             notifyObservers();
-            states.add(lastExpanded);
-            states.add(unexplored.get(0));
+            states.addAll(unexplored);
         }
 
+        isDone = true;
         nodesVisited.removeAll(nodesVisited);
-        nodesVisited.forEach((State state) -> {System.out.println(state.getBotLocation());});
     }
 
     @Override
     public void reconstructPath() 
     {
-        if (goal == null) return;
+        if (extractedGoal == null) 
+        {
+            notifyObservers();
+            return;
+        }
 
-        State current = goal;
+        State current = extractedGoal;
 
         while (!current.equals(initial))
         {
@@ -81,7 +89,7 @@ public class BFS extends SearchStrategy
 
         for (State state: all)
         {
-            if (!exploredStates.contains(state))
+            if (!states.contains(state) && !exploredStates.contains(state))
                 unexplored.add(state);
         }
         

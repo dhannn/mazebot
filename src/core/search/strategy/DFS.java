@@ -11,8 +11,7 @@ import lombok.Getter;
 public class DFS extends SearchStrategy 
 {
     Stack<State> states;
-    @Getter String commonName = "Depth-First Search";
-    State extractedGoal;
+    @Getter String commonName = "Depth-First Search";;
 
     public DFS()
     {
@@ -42,13 +41,6 @@ public class DFS extends SearchStrategy
             System.out.println("Exploring State " + lastExpanded.getBotLocation());
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
-
-            if (State.isGoal(lastExpanded, goal.getBotLocation()))
-            {
-                extractedGoal = lastExpanded;
-                isFound = true;
-                break;
-            }
             
             if (unexplored.size() == 0)
                 continue;
@@ -56,8 +48,16 @@ public class DFS extends SearchStrategy
             notifyObservers();
             states.add(lastExpanded);
             states.add(unexplored.get(0));
+
+            if (State.isGoal(lastExpanded, goal.getBotLocation()))
+            {
+                extractedGoal = lastExpanded;
+                isFound = true;
+                break;
+            }
         }
 
+        isDone = true;
         nodesVisited.removeAll(nodesVisited);
         nodesVisited.forEach((State state) -> {System.out.println(state.getBotLocation());});
     }
@@ -65,7 +65,11 @@ public class DFS extends SearchStrategy
     @Override
     public void reconstructPath() 
     {
-        if (extractedGoal == null) return;
+        if (extractedGoal == null) 
+        {
+            notifyObservers();
+            return;
+        }
 
         State current = extractedGoal;
 

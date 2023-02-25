@@ -20,10 +20,11 @@ public abstract class SearchStrategy implements Observable
     protected int numExplored;
     protected HashSet<State> exploredStates;
     protected Hashtable<State, Integer> orderOfStates;
-    protected boolean isFound;
-    
+    @Getter protected boolean isFound;
+    @Getter protected boolean isDone;
     protected State initial;
     protected State goal;
+    protected State extractedGoal;
 
     public SearchStrategy() 
     {
