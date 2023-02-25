@@ -19,14 +19,7 @@
         </fileset>
     </path>
     
-    <target name="compile">
-        <mkdir dir="${out.dir}"/>
-        <copy todir="${out.dir}/classes/assets">
-            <fileset dir="src/assets">
-              <exclude name="**/*.java"/>
-            </fileset>
-          </copy>
-          
+    <target name="compile" depends="clean">
         <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath">
             <compilerarg line="--module-path lib/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"/>
         </javac>
@@ -34,7 +27,7 @@
 
     <target name="jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
-        <echo message="${resources.dir}"/>
+
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
@@ -53,5 +46,12 @@
         </java>
     </target>
 
-    <!-- <target name="main" depends="clean,run"/>     -->
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${jar.dir}/${ant.project.name}.jar"/>
+        <mkdir dir="${classes.dir}"/>
+        <touch file="${classes.dir}/.gitignore"/>
+    </target>
+
+    <target name="main" depends="clean,run"/>    
 </project>
