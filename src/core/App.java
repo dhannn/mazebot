@@ -1,3 +1,6 @@
+package core;
+import java.net.URL;
+
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -17,7 +20,8 @@ public class App extends Application
     public void start(Stage stage) throws Exception 
     {
         initializeApp(stage);
-        stage.getIcons().add(new Image("assets/mazebot.png"));
+        URL imageURL = getClass().getResource("/assets/mazebot.png");
+        stage.getIcons().add(new Image(imageURL.toExternalForm()));
         stage.show();
     }
 

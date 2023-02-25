@@ -1,5 +1,6 @@
-<project name="maze-bot">
+<project name="m_ai_zbot" basedir="." default="main">
     <property name="src.dir" value="src"/>
+    <property name="resources.dir" value="${src.dir}/assets"/>
     <property name="lib.dir" value="lib"/>
 
     <property name="dat.dir" value="dat"/>
@@ -7,57 +8,50 @@
 
     <property name="out.dir" value="out"/>
     <property name="classes.dir" value="${out.dir}/classes"/>
-    <property name="jar.dir" value="${out.dir}/jar"/>
+    <property name="jar.dir" value="${out.dir}"/>
 
-    <property name="main-class" value="Main"/>
+    <property name="main-class" value="core.App"/>
     
     <path id="classpath">
         <fileset dir="${lib.dir}">
             <include name="lombok.jar"/>
+            <include name="**/*.jar" />
         </fileset>
     </path>
-
-    <echo message="Classpath = ${classpath}"/>
-
+    
     <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <mkdir dir="${dat.dir}"/>
-        <mkdir dir="${raw_data.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+        <mkdir dir="${out.dir}"/>
+        <copy todir="${out.dir}/classes/assets">
+            <fileset dir="src/assets">
+              <exclude name="**/*.java"/>
+            </fileset>
+          </copy>
+          
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath">
+            <compilerarg line="--module-path lib/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"/>
+        </javac>
     </target>
 
     <target name="jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
+        <echo message="${resources.dir}"/>
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
+            <fileset dir="${src.dir}" includes="assets/**"/>
         </jar>
     </target>
 
     <target name="run" depends="jar">
-        <java fork="true" classname="${main-class}">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/${ant.project.name}.jar"/>
             </classpath>
+            <jvmarg line="--module-path lib/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"/>
         </java>
-
-        <exec dir="." executable="python">
-            <arg line="${src.dir}/plot/plot.py"/>
-        </exec>
     </target>
 
-    <target name="clean">
-        <delete dir="${out.dir}"/>
-
-        <delete dir="${dat.dir}"/>
-        <mkdir dir="${dat.dir}"/>
-        <mkdir dir="${raw_data.dir}"/>
-    
-        <touch file="${dat.dir}/.gitkeep"/>
-        <touch file="${raw_data.dir}/.gitkeep"/>
-    </target>
-
-    <target name="main" depends="clean,run"/>    
+    <!-- <target name="main" depends="clean,run"/>     -->
 </project>
