@@ -22,6 +22,7 @@ public class App extends Application
         initializeApp(stage);
         URL imageURL = getClass().getResource("/assets/mazebot.png");
         stage.getIcons().add(new Image(imageURL.toExternalForm()));
+        stage.setResizable(false);
         stage.show();
     }
 
