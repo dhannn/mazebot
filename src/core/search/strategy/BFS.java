@@ -96,4 +96,10 @@ public class BFS extends SearchStrategy
         nodesVisited = unexplored;
         return unexplored;
     }
+
+    @Override
+    public SearchStrategy instance() 
+    {
+        return new BFS();
+    }
 }

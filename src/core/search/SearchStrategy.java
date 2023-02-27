@@ -17,9 +17,7 @@ public abstract class SearchStrategy implements Observable
     @Getter protected ArrayList<State> nodesVisited;
 
     @Getter protected Stack<State> solutionPath;
-    protected int numExplored;
     protected HashSet<State> exploredStates;
-    protected Hashtable<State, Integer> orderOfStates;
     @Getter protected boolean isFound;
     @Getter protected boolean isDone;
     protected State initial;
@@ -29,8 +27,6 @@ public abstract class SearchStrategy implements Observable
     public SearchStrategy() 
     {
         exploredStates = new HashSet<State>();
-        numExplored = 0;
-        orderOfStates = new Hashtable<State, Integer>();
         isFound = false;
         solutionPath = new Stack<State>();
 
@@ -48,8 +44,6 @@ public abstract class SearchStrategy implements Observable
         this.goal = goal;
 
         exploredStates = new HashSet<State>();
-        numExplored = 0;
-        orderOfStates = new Hashtable<State, Integer>();
         solutionPath = new Stack<State>();
         isFound = false;
 
@@ -83,6 +77,7 @@ public abstract class SearchStrategy implements Observable
     }
 
     public abstract String getCommonName();
+    public abstract SearchStrategy instance(); 
     public abstract void search();
     public abstract void reconstructPath();
 }

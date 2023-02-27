@@ -83,12 +83,6 @@ public class Controller
             }
         }
 
-        State initial = new State(maze.getInitialCell());
-        State goal = new State(maze.getGoalCell());
-        
-        // mazeComponent.search = chosenSearch;
-        chosenSearch.setInitial(initial);
-        chosenSearch.setGoal(goal);
         mazeBot.setSearchStrategy(chosenSearch);
         chosenSearch.attach(mazeComponent);
         chosenSearch.attach(statsComponent);

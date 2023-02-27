@@ -17,7 +17,7 @@ public class MazeBot
     @Getter private State initial;
     @Getter private State goal;
     private static Maze maze;
-    @Setter private SearchStrategy searchStrategy;
+    private SearchStrategy searchStrategy;
     private final static Action[] ACTION = {
         new Left(), new Up(), new Right(), new Down()};
     @Getter private static int size;
@@ -36,6 +36,13 @@ public class MazeBot
         this.goal = new State(maze.getGoalCell(), null);
     }
 
+    public void setSearchStrategy(SearchStrategy search)
+    {
+        searchStrategy = search.instance();
+        searchStrategy.setInitial(initial);
+        searchStrategy.setGoal(goal);
+    }
+
     public static ArrayList<State> getNextStates(State state)
     {
         ArrayList<State> states = new ArrayList<State>();
@@ -50,6 +57,7 @@ public class MazeBot
 
         return states;
     }
+
 
     /**
      * This function calls the {@code search()} function of the 
@@ -75,7 +83,7 @@ public class MazeBot
 
     public int getNumExplored()
     {
-        return searchStrategy.numExplored;
+        return searchStrategy.exploredStates.size();
     }
     
     public int getNumSolution()

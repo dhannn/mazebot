@@ -98,4 +98,10 @@ public class DFS extends SearchStrategy
         nodesVisited = unexplored;
         return unexplored;
     }
+
+    @Override
+    public SearchStrategy instance() 
+    {
+        return new DFS();
+    }
 }
