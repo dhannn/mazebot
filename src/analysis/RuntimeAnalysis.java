@@ -7,8 +7,10 @@ import core.search.strategy.BFS;
 import core.search.strategy.DFS;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 public class RuntimeAnalysis 
 {
@@ -60,7 +62,7 @@ public class RuntimeAnalysis
      *          https://www.baeldung.com/java-record-keyword). Add it to the 
      *          sampleData arraylist.
      */
-    private static void getSampleData(SearchStrategy search) {
+    private static void getSampleData(SearchStrategy search) throws IOException {
         for (Maze maze : mazes) {
             MazeBot mazebot = new MazeBot(maze);
             mazebot.setSearchStrategy(search);
@@ -76,7 +78,29 @@ public class RuntimeAnalysis
             );
             sampleDataList.add(sampleData);
         }
+
+        writeSampleDataToFile(sampleDataList);
     }
+
+    private static void writeSampleDataToFile(ArrayList<SampleData> sampleDataList) throws IOException {
+        // Create the file object
+        File outputFile = new File(DAT_DIRECTORY + "/analysis/sample_data.csv");
+
+        // Create a writer to write to the file
+        FileWriter writer = new FileWriter(outputFile);
+
+        // Write the headers to the file
+        writer.write("search_name, size, runtime, num_explored, num_solution\n");
+
+        // Loop through each sample data record and write to the file
+        for (SampleData sampleData : sampleDataList) {
+            writer.write(String.format("%s,%d,%d,%d,%d\n", sampleData.searchname(), sampleData.n(), sampleData.runtime(), sampleData.numExplored(), sampleData.numSolution()));
+        }
+
+        // Close the writer
+        writer.close();
+    }
+
 
     private static long getRuntime(MazeBot mazebot)
     {
