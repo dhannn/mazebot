@@ -16,7 +16,6 @@ public class DFS extends SearchStrategy
     public DFS()
     {
         states = new Stack<State>();
-        solutionPath = new Stack<State>();
         goal = null;
     }
 
@@ -24,7 +23,6 @@ public class DFS extends SearchStrategy
     {
         super(initial, goal);
         states = new Stack<State>();
-        solutionPath = new Stack<State>();
         extractedGoal = null;
     }
 

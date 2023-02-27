@@ -13,6 +13,8 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import view.components.MazeComponent;
+import view.components.StatsComponent;
 
 public class AnimationView extends Pane
 {
@@ -77,13 +79,7 @@ public class AnimationView extends Pane
         styleAlgorithms();
 
         btnStart = new Button("Start");
-        btnStart.setOnMouseClicked( e -> { 
-
-            maze.search.search(); 
-            maze.search.reconstructPath();
-            maze.playAnim();
-            stats.playAnim(); 
-        });
+        btnStart.setOnMouseClicked( e -> Controller.search() );
         this.getChildren().add(btnStart);
         styleStart();
 

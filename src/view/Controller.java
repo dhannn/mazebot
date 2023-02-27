@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import lombok.Getter;
+import view.components.MazeComponent;
+import view.components.StatsComponent;
 
 public class Controller 
 {
@@ -84,12 +86,19 @@ public class Controller
         State initial = new State(maze.getInitialCell());
         State goal = new State(maze.getGoalCell());
         
-        mazeComponent.search = chosenSearch;
+        // mazeComponent.search = chosenSearch;
         chosenSearch.setInitial(initial);
         chosenSearch.setGoal(goal);
         mazeBot.setSearchStrategy(chosenSearch);
         chosenSearch.attach(mazeComponent);
         chosenSearch.attach(statsComponent);
+    }
+
+    public static void search()
+    {
+        mazeBot.search();
+        mazeComponent.playAnim();
+        statsComponent.playAnim();
     }
 
     private static ArrayList<String> getAlgorithmNames()

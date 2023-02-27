@@ -12,7 +12,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.AnimationView;
-import view.MazeComponent;
+import view.components.MazeComponent;
 
 public class Test_AnimationView  extends Application
 {

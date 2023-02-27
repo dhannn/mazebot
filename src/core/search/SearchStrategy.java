@@ -32,6 +32,7 @@ public abstract class SearchStrategy implements Observable
         numExplored = 0;
         orderOfStates = new Hashtable<State, Integer>();
         isFound = false;
+        solutionPath = new Stack<State>();
 
         observers = new ArrayList<Observer>();
     }
@@ -49,6 +50,7 @@ public abstract class SearchStrategy implements Observable
         exploredStates = new HashSet<State>();
         numExplored = 0;
         orderOfStates = new Hashtable<State, Integer>();
+        solutionPath = new Stack<State>();
         isFound = false;
 
         observers = new ArrayList<Observer>();
@@ -62,6 +64,11 @@ public abstract class SearchStrategy implements Observable
     public void setGoal(State goal)
     {
         this.goal = goal;
+    }
+
+    public State peekSolution()
+    {
+        return solutionPath.peek();
     }
 
     public void attach(Observer observer)

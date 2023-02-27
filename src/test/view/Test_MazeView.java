@@ -5,11 +5,11 @@ import core.maze.Cell.Type;
 import core.maze.generator.GraphToCell;
 import core.maze.generator.MazeGenerator;
 import core.maze.generator.MazeGraph;
-import view.MazeComponent;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import view.components.MazeComponent;
 
 public class Test_MazeView extends Application
 {
