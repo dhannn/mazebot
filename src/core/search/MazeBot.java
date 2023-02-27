@@ -72,4 +72,14 @@ public class MazeBot
     {
         return action.act(state, size, maze.getCellTypes());
     }
+
+    public int getNumExplored()
+    {
+        return searchStrategy.numExplored;
+    }
+    
+    public int getNumSolution()
+    {
+        return searchStrategy.solutionPath.size();
+    }
 }

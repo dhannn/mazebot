@@ -14,10 +14,10 @@ public class RuntimeAnalysis
     private static final String DAT_DIRECTORY = "dat";
     private static final String TESTCASES_DIRECTORY = DAT_DIRECTORY + "/testcases";
 
-    private static ArrayList<Maze> mazes = new ArrayList<Maze>();
+    private static ArrayList<Maze> mazes;
     private static SearchStrategy[] searches = {new BFS(), new DFS()};
 
-    private static ArrayList<SampleData> sampleData = new ArrayList<SampleData>();
+    private static ArrayList<SampleData> sampleDataList = new ArrayList<SampleData>();
 
     public static void main(String[] args) throws IOException 
     {
@@ -53,8 +53,6 @@ public class RuntimeAnalysis
      */
     private static void getSampleData(SearchStrategy search)
     {
-        MazeBot mazebot = new MazeBot(null);
-        mazebot.setSearchStrategy(search);
         
     }
 
