@@ -28,6 +28,7 @@ public class RuntimeAnalysis
             getSampleData(search);
 
     }
+
     /**
      * TODO:    Create a function that will loop through the TESTCASES_DIRECTORY
      *          and create a maze object out of each file. Return the arraylist
@@ -70,7 +71,7 @@ public class RuntimeAnalysis
     {
         for (int n = 4; n <= 64; n = n << 1)
         {
-            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(1, n);
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n);
             testCaseGenerator.printToFile(TESTCASES_DIRECTORY);
         }
     }
