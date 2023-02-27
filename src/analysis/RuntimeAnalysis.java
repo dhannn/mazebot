@@ -1,13 +1,14 @@
 package analysis;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import core.maze.Maze;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.strategy.BFS;
 import core.search.strategy.DFS;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class RuntimeAnalysis 
 {
@@ -34,9 +35,17 @@ public class RuntimeAnalysis
      *          and create a maze object out of each file. Return the arraylist
      *          of all maze objects created.
      */
-    private static ArrayList<Maze> getMazes()
-    {
-        return null;
+    private static ArrayList<Maze> getMazes() throws IOException {
+        ArrayList<Maze> mazes = new ArrayList<>();
+        File testCasesDir = new File(TESTCASES_DIRECTORY);
+        File[] mazeFiles = testCasesDir.listFiles();
+        for (File mazeFile : mazeFiles) {
+            if (mazeFile.isFile()) {
+                Maze maze = new Maze(mazeFile.getAbsolutePath());
+                mazes.add(maze);
+            }
+        }
+        return mazes;
     }
 
     /**
@@ -51,9 +60,22 @@ public class RuntimeAnalysis
      *          https://www.baeldung.com/java-record-keyword). Add it to the 
      *          sampleData arraylist.
      */
-    private static void getSampleData(SearchStrategy search)
-    {
-        
+    private static void getSampleData(SearchStrategy search) {
+        for (Maze maze : mazes) {
+            MazeBot mazebot = new MazeBot(maze);
+            mazebot.setSearchStrategy(search);
+            long runtime = getRuntime(mazebot);
+            int numExplored = mazebot.getNumExplored();
+            int numSolution = mazebot.getNumSolution();
+            SampleData sampleData = new SampleData(
+                    search.getCommonName(),
+                    maze.getSize(),
+                    runtime,
+                    numExplored,
+                    numSolution
+            );
+            sampleDataList.add(sampleData);
+        }
     }
 
     private static long getRuntime(MazeBot mazebot)
