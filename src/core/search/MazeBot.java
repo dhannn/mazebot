@@ -20,7 +20,7 @@ public class MazeBot
     @Setter private SearchStrategy searchStrategy;
     private final static Action[] ACTION = {
         new Left(), new Up(), new Right(), new Down()};
-    private static int size;
+    @Getter private static int size;
 
     /**
      * This constructor will initialize the initial and goal state from the maze.
