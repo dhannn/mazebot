@@ -8,78 +8,124 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.Setter;
 import utils.Color;
 import utils.Observable;
 import utils.Observer;
 
+/**
+ * This class encapsulates the rendered stats of the chosen search algorithm.
+ * The search algorithm contains three pertinent stats - the states visited 
+ * (or the states known but not its neighbors), the states expanded (when 
+ * its neighbors are known) and the states in the solution.
+ */
 public class StatsComponent extends TextFlow implements Observer
 {
-    private static Text txtNumExpanded;
-    private static Text txtNumExpandedData;
-    private static Text txtNumVisited;
-    private static Text txtNumVisitedData;
-    private static Text txtSolution;
-    private static Text txtSolutionData;
+    /**
+     * Message when no solution has been found.
+     */
+    private final static String NO_SOLUTION_MSG = 
+        "m_ai_zbot cannot find solution!";
 
-    private HashSet<State> visited;
-    private State lastExpanded = null;
-    private Timeline timeline;
+    /**
+     * The value of the stats when initialized
+     */
+    private final static String DEFAULT_STAT = "0 states";
 
-    private int numExpanded = 0;
-    private int numVisited = 0;
-    private int numSolution = 0;
-
+    /**
+     * Integral value of the visited stat
+     */
+    private final static int VISITED = 0;
+    /**
+     * Integral value of the expanded stat
+     */
+    private final static int EXPANDED = 1;
+    /**
+     * Integral value of the solution stat
+     */
+    private final static int SOLUTION = 2;
+    
+    /**
+     * All pertinent stats in the search
+     */
+    private static Stat[] stats = new Stat[3];
+    
+    /**
+     * The timeline used for recording animation
+     */
+    private Timeline timeline = new Timeline();
+    /**
+     * The search algorithm used as the {@code Observable} object
+     */
+    private SearchStrategy search;
+    /**
+     * The current frame being rendered
+     */
     private int frames = 0;
 
-    private SearchStrategy search;
+    /**
+     * Contains the visited states
+     */
+    private HashSet<State> visited = new HashSet<State>();
+    /**
+     * The last expanded node
+     */
+    private State lastExpanded = null;
 
+    /**
+     * Constructor for the {@code StatsComponent} object
+     * @param size
+     */
     public StatsComponent(int size)
     {
-        visited = new HashSet<State>();
+        stats[VISITED] = new Stat("Number of states visited", DEFAULT_STAT);
+        stats[EXPANDED] = new Stat("Number of states expanded", DEFAULT_STAT);
+        stats[SOLUTION] = new Stat(
+            "Number of states in the solution", DEFAULT_STAT);
 
-        timeline = new Timeline();
+        for (Stat stat: stats)
+        {
+            stat.styleStat();
+            stat.addToParent(this);
+        }
+
         timeline.setRate((size / 64f) * 60);
         setLineSpacing(1);
-
-        txtNumExpanded = new Text("Number of states expanded");
-        txtNumExpanded.setFill(Color.BLACK);
-        txtNumExpanded.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        getChildren().add(txtNumExpanded);
-        
-        txtNumExpandedData = new Text();
-        txtNumExpandedData.setText("\n0 states");
-        txtNumExpandedData.setFill(Color.BLACK);
-        txtNumExpandedData.setFont(Font.font("Arial", 16));
-        getChildren().add(txtNumExpandedData);
-
-        txtNumVisited = new Text("\n\nNumber of states visited");
-        txtNumVisited.setFill(Color.BLACK);
-        txtNumVisited.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        getChildren().add(txtNumVisited);
-        
-        txtNumVisitedData = new Text();
-        txtNumVisitedData.setText("\n0 states");
-        txtNumVisitedData.setFill(Color.BLACK);
-        txtNumVisitedData.setFont(Font.font("Arial", 16));
-        getChildren().add(txtNumVisitedData);
-
-        txtSolution = new Text("\n\nNumber of states in solution");
-        txtSolution.setFill(Color.BLACK);
-        txtSolution.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        getChildren().add(txtSolution);
-        
-        txtSolutionData = new Text();
-        txtSolutionData.setText("\n0 states");
-        txtSolutionData.setFill(Color.BLACK);
-        txtSolutionData.setFont(Font.font("Arial", 16));
-        getChildren().add(txtSolutionData);
-
         setPadding(new Insets(25));  
+    }
+
+    /**
+     * Plays the animation
+     */
+    public void playAnim() 
+    {
+        timeline.play();
+    }
+
+    /**
+     * Pauses the animation
+     */
+    public void pauseAnim() 
+    {
+        timeline.pause();
+    }
+
+    /**
+     * Steps the animation
+     */
+    public void stepAnim() 
+    {
+        Duration current = timeline.getCurrentTime();
+        Duration next = current.add(Duration.seconds(1));
+
+        timeline.jumpTo(next);
     }
 
     @Override
@@ -92,63 +138,90 @@ public class StatsComponent extends TextFlow implements Observer
     public void update() 
     {
         visited.addAll(search.getNodesVisited());
-        numVisited = visited.size();        
+        stats[VISITED].setValue(visited.size());
 
         if (lastExpanded != search.getLastExpanded())
         {
             lastExpanded = search.getLastExpanded();
-            numExpanded++;
+            stats[EXPANDED].increment();
         }
 
         if (search.getSolutionPath().size() > 0)
-        {
-            numSolution++;
-        }
+            stats[SOLUTION].increment();
 
-        setText();
+        addKeyframe();
         frames++;
     }
     
-    private void setText()
+    /**
+     * Adds a keyframe to the timeline based on the current stats
+     */
+    private void addKeyframe()
     {
-        KeyValue expandedKeyValue = new KeyValue(
-            txtNumExpandedData.textProperty(), 
-            "\n" + numExpanded + " states");
+        KeyValue[] keyvals = new KeyValue[3];
 
-        KeyValue visitedKeyValue = new KeyValue(
-            txtNumVisitedData.textProperty(), 
-            "\n" + numVisited + " states");
-
-        
-        KeyValue solutionKeyValue = null;
-        if (search.isDone() && !search.isFound()) {
-            solutionKeyValue = new KeyValue(
-            txtSolutionData.textProperty(), 
-            "\nNo solution has been found!");
-        } else {
-            solutionKeyValue = new KeyValue(
-            txtSolutionData.textProperty(), 
-            "\n" + numSolution + " states");
+        for (int i = VISITED; i <= SOLUTION; i++)
+        {
+            KeyValue kVal = stats[i].getAnimKeyValue();
+            keyvals[i] = kVal;
         }
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(frames), expandedKeyValue, visitedKeyValue, solutionKeyValue);
+
+        if (search.isDone() && !search.isFound())
+            keyvals[SOLUTION] 
+                = stats[SOLUTION].getAnimKeyValue(NO_SOLUTION_MSG);
+
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(frames), keyvals);
         timeline.getKeyFrames().add(keyFrame);
     }
 
-    public void playAnim() 
+    private class Stat
     {
-        timeline.play();
-    }
+        private Text keyView;
+        private Text valueView;
+        @Getter @Setter private int value;
 
-    public void pauseAnim() 
-    {
-        timeline.pause();
-    }
+        private final static Font KEY_FONT = Font.font("Arial", 
+            FontWeight.BOLD, 13);
+        private final static Font VAL_FONT = Font.font("Arial", 16);
 
-    public void stepAnim() 
-    {
-        Duration current = timeline.getCurrentTime();
-        Duration next = current.add(Duration.seconds(1));
+        private final static Paint DEFAULT_COLOR = Color.BLACK;
 
-        timeline.jumpTo(next);
+        public Stat(String key, String value)
+        {
+            keyView = new Text(key + "\n");
+            valueView = new Text(value + "\n");
+
+            this.value = 0;
+        }
+
+        public void increment()
+        {
+            value++;
+        }
+
+        public void styleStat()
+        {
+            keyView.setFont(KEY_FONT);
+            valueView.setFont(VAL_FONT);
+
+            keyView.setFill(DEFAULT_COLOR);
+            valueView.setFill(DEFAULT_COLOR);
+        }
+
+        public void addToParent(StatsComponent root)
+        {
+            root.getChildren().add(keyView);
+            root.getChildren().add(valueView);
+        }
+
+        public KeyValue getAnimKeyValue()
+        {
+            return new KeyValue(valueView.textProperty(), value + " states\n");
+        }
+
+        public KeyValue getAnimKeyValue(String override)
+        {
+            return new KeyValue(valueView.textProperty(), override);
+        }
     }
 }
