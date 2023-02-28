@@ -20,6 +20,8 @@ public class Maze
     public final static int DOWN  =   2;
     public final static int RIGHT =   3;
 
+    @Getter private boolean isSparse = false;
+
     public Maze(int size) 
     {
         maze = new Cell[size][size];
@@ -75,6 +77,11 @@ public class Maze
         }
 
         return types;
+    }
+
+    public void setSparse()
+    {
+        
     }
 
     @Override

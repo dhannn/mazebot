@@ -31,10 +31,10 @@ public class TestCaseGenerator
         for (int i = 1; i <= mazes.size(); i++)
         {
             String filename = String.format(format, n, i);
-            
+
             FileWriter file = new FileWriter(directory + "//" + filename);
             Maze maze = GraphToCell.mazegraphToCell(mazes.get(i - 1));
-
+            
             file.append(n + "\n");
             file.append(maze.toString());
             file.close();

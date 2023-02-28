@@ -12,36 +12,51 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class RuntimeAnalysis 
+public class Analysis 
 {
     private static final String DAT_DIRECTORY = "dat";
     private static final String TESTCASES_DIRECTORY = DAT_DIRECTORY + "/testcases";
+    private static final String DENSE_DIRECTORY = TESTCASES_DIRECTORY + "/dense";
+    private static final String SPARSE_DIRECTORY = TESTCASES_DIRECTORY + "/sparse";
     
     private static ArrayList<Maze> mazes;
     private static SearchStrategy[] searches = {new BFS(), new DFS()};
     private static ArrayList<String> mazecode = new ArrayList<String>();
 
-    private static ArrayList<SampleData> sampleDataList = new ArrayList<SampleData>();
+    private static ArrayList<SampleData> sampleDataList;
 
     public static void main(String[] args) throws IOException 
     {
         generateTestCases();
-        mazes = getMazes();
+        mazes = getMazes(false);
         
         for (SearchStrategy search: searches)
             getSampleData(search);
 
-        writeSampleDataToFile(sampleDataList);
+        writeSampleDataToFile(sampleDataList, false);
+        
+        mazes = getMazes(true);
+        
+        for (SearchStrategy search: searches)
+            getSampleData(search);
+
+        writeSampleDataToFile(sampleDataList, true);
     }
     
-    private static ArrayList<Maze> getMazes() throws IOException 
+    private static ArrayList<Maze> getMazes(boolean isSparse) throws IOException 
     {
         ArrayList<Maze> mazes = new ArrayList<>();
-        File testCasesDir = new File(TESTCASES_DIRECTORY);
+        String filename = isSparse? SPARSE_DIRECTORY: DENSE_DIRECTORY;
+        File testCasesDir = new File(filename);
         File[] mazeFiles = testCasesDir.listFiles();
+
         for (File mazeFile : mazeFiles) {
             if (mazeFile.isFile()) {
                 Maze maze = new Maze(mazeFile.getAbsolutePath());
+
+                if (isSparse)
+                    maze.setSparse();
+
                 mazes.add(maze);
 
                 String code = mazeFile.getPath().substring(18, 24);
@@ -53,6 +68,8 @@ public class RuntimeAnalysis
 
     private static void getSampleData(SearchStrategy search) throws IOException 
     {
+        sampleDataList = new ArrayList<SampleData>();
+
         int i = 0;
         for (Maze maze : mazes) {
             System.out.println("Searching Maze #" + (mazes.indexOf(maze) + 1));
@@ -78,9 +95,13 @@ public class RuntimeAnalysis
         }
     }
 
-    private static void writeSampleDataToFile(ArrayList<SampleData> sampleDataList) throws IOException {
+    private static void writeSampleDataToFile(
+        ArrayList<SampleData> sampleDataList, boolean isSparse) 
+        throws IOException 
+    {
         // Create the file object
-        File outputFile = new File(DAT_DIRECTORY + "/analysis/sample_data.csv");
+        String mazeType = isSparse? "sparse": "dense";
+        File outputFile = new File(DAT_DIRECTORY + "/analysis/raw_data_"+ mazeType + ".csv");
 
         // Create a writer to write to the file
         FileWriter writer = new FileWriter(outputFile);
@@ -112,7 +133,12 @@ public class RuntimeAnalysis
         for (int n = 4; n <= 64; n = n << 1)
         {
             TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n);
-            testCaseGenerator.printToFile(TESTCASES_DIRECTORY);
+            testCaseGenerator.printToFile(DENSE_DIRECTORY);
+        }
+        for (int n = 4; n <= 64; n = n << 1)
+        {
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n);
+            testCaseGenerator.printToFile(SPARSE_DIRECTORY);
         }
     }
 

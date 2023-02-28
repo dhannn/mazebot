@@ -6,6 +6,8 @@
     <property name="dat.dir" value="dat"/>
     <property name="testcases.dir" value="${dat.dir}/testcases"/>
     <property name="analysis.dir" value="${dat.dir}/analysis"/>
+    <property name="dense.dir" value="${testcases.dir}/dense"/>
+    <property name="sparse.dir" value="${testcases.dir}/sparse"/>
 
     <property name="out.dir" value="out"/>
     <property name="classes.dir" value="${out.dir}/classes"/>
@@ -51,8 +53,12 @@
         <delete dir="${classes.dir}"/>
         <delete dir="${jar.dir}/${ant.project.name}.jar"/>
         <mkdir dir="${classes.dir}"/>
-        <delete dir="${testcases.dir}"/>
-        <mkdir dir="${testcases.dir}"/>
+
+        <delete dir="${sparse.dir}"/>
+        <mkdir dir="${sparse.dir}"/>
+        <delete dir="${dense.dir}"/>
+        <mkdir dir="${dense.dir}"/>
+
         <delete dir="${analysis.dir}"/>
         <mkdir dir="${analysis.dir}"/>
         <touch file="${classes.dir}/.gitignore"/>
@@ -63,7 +69,7 @@
 
         <jar destfile="${jar.dir}/analyze.jar" basedir="${classes.dir}">
             <manifest>
-                <attribute name="Main-Class" value="analysis.RuntimeAnalysis"/>
+                <attribute name="Main-Class" value="analysis.Analysis"/>
             </manifest>
         </jar>
         <java jar="${jar.dir}/analyze.jar" fork="true">
