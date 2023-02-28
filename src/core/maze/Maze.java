@@ -14,6 +14,8 @@ public class Maze
     @Getter @Setter int size;
     @Getter @Setter Cell initialCell;
     @Getter @Setter Cell goalCell;
+    @Getter boolean isSparse = false;
+
     
     public final static int LEFT  =   0;
     public final static int UP    =   1;
@@ -47,6 +49,23 @@ public class Maze
         };
 
         reader.close();
+    }
+
+    public void setSparse(double threshold) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Cell current = maze[i][j];
+
+                if (current.getType() == Cell.Type.WALL) {
+                    double rand = Math.random();
+                    if (rand < threshold) {
+                        maze[i][j] = new Cell(i, j, Cell.Type.SPACE);
+                    }
+                }
+            }
+        }
+
+        isSparse = true;
     }
 
     public Cell getCell(int row, int col)
