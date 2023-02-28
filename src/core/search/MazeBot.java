@@ -38,7 +38,7 @@ public class MazeBot
 
     public void setSearchStrategy(SearchStrategy search)
     {
-        searchStrategy = search.instance();
+        searchStrategy = search;
         searchStrategy.setInitial(initial);
         searchStrategy.setGoal(goal);
     }
@@ -83,7 +83,7 @@ public class MazeBot
 
     public int getNumExplored()
     {
-        return searchStrategy.exploredStates.size();
+        return searchStrategy.expandedStates.size();
     }
     
     public int getNumSolution()

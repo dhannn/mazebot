@@ -72,6 +72,8 @@ public class Controller
     public static void getChosenAlgorithm()
     {
         String chosen = animationView.getChosenAlgorithm();
+        mazeComponent.restartTimeline();
+        statsComponent.restartTimeline();
 
         for (SearchStrategy search: searches)
         {
@@ -83,9 +85,10 @@ public class Controller
             }
         }
 
-        mazeBot.setSearchStrategy(chosenSearch);
+        chosenSearch = chosenSearch.instance();
         chosenSearch.attach(mazeComponent);
         chosenSearch.attach(statsComponent);
+        mazeBot.setSearchStrategy(chosenSearch);
     }
 
     public static void search()

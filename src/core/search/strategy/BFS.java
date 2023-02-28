@@ -12,12 +12,12 @@ import lombok.Getter;
 
 public class BFS extends SearchStrategy 
 {
-    Queue<State> states;
+    Queue<State> frontier;
     @Getter String commonName = "Breadth-First Search";
 
     public BFS()
     {
-        states = new LinkedList<State>();
+        frontier = new LinkedList<State>();
         solutionPath = new Stack<State>();
         extractedGoal = null;
         isDone = false;
@@ -26,7 +26,7 @@ public class BFS extends SearchStrategy
     public BFS(State initial, State goal) 
     {
         super(initial, goal);
-        states = new LinkedList<State>();
+        frontier = new LinkedList<State>();
         solutionPath = new Stack<State>();
         extractedGoal = null;
     }
@@ -34,14 +34,19 @@ public class BFS extends SearchStrategy
     @Override
     public void search() 
     {
-        states.add(initial);
+        frontier.add(initial);
 
-        while(!states.isEmpty()) 
+        while(!frontier.isEmpty()) 
         {
-            lastExpanded = states.poll();
-            exploredStates.add(lastExpanded);
+            lastExpanded = frontier.poll();
+            expandedStates.add(lastExpanded);
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
+            
+            frontier.addAll(unexplored);
+            nodesVisited = unexplored;
+
+            notifyObservers();
             
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
@@ -49,9 +54,6 @@ public class BFS extends SearchStrategy
                 isFound = true;
                 break;
             }
-            
-            notifyObservers();
-            states.addAll(unexplored);
         }
 
         isDone = true;
@@ -78,8 +80,9 @@ public class BFS extends SearchStrategy
 
             notifyObservers();
         }
-
+        
         solutionPath.add(current);
+        notifyObservers();
     }
 
     private ArrayList<State> getUnexploredStates(State current)
@@ -89,11 +92,10 @@ public class BFS extends SearchStrategy
 
         for (State state: all)
         {
-            if (!states.contains(state) && !exploredStates.contains(state))
+            if (!frontier.contains(state) && !expandedStates.contains(state))
                 unexplored.add(state);
         }
         
-        nodesVisited = unexplored;
         return unexplored;
     }
 

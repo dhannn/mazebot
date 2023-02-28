@@ -1,6 +1,7 @@
 package core.search;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Stack;
@@ -13,11 +14,12 @@ public abstract class SearchStrategy implements Observable
 {
     private ArrayList<Observer> observers;
     
+    protected Collection<State> frontier;
     @Getter protected State lastExpanded;
     @Getter protected ArrayList<State> nodesVisited;
 
     @Getter protected Stack<State> solutionPath;
-    protected HashSet<State> exploredStates;
+    protected HashSet<State> expandedStates;
     @Getter protected boolean isFound;
     @Getter protected boolean isDone;
     protected State initial;
@@ -26,7 +28,7 @@ public abstract class SearchStrategy implements Observable
 
     public SearchStrategy() 
     {
-        exploredStates = new HashSet<State>();
+        expandedStates = new HashSet<State>();
         isFound = false;
         solutionPath = new Stack<State>();
 
@@ -43,7 +45,7 @@ public abstract class SearchStrategy implements Observable
         this.initial = initial;
         this.goal = goal;
 
-        exploredStates = new HashSet<State>();
+        expandedStates = new HashSet<State>();
         solutionPath = new Stack<State>();
         isFound = false;
 

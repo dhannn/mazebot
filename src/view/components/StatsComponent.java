@@ -68,7 +68,7 @@ public class StatsComponent extends TextFlow implements Observer
     /**
      * The current frame being rendered
      */
-    private int frames = 0;
+    private int frames = 1;
 
     /**
      * Contains the visited states
@@ -128,6 +128,11 @@ public class StatsComponent extends TextFlow implements Observer
         timeline.jumpTo(next);
     }
 
+    public void restartTimeline()
+    {
+        timeline.getKeyFrames().removeAll(timeline.getKeyFrames());
+    }
+
     @Override
     public void link(Observable observable) 
     {
@@ -137,14 +142,15 @@ public class StatsComponent extends TextFlow implements Observer
     @Override
     public void update() 
     {
-        visited.addAll(search.getNodesVisited());
-        stats[VISITED].setValue(visited.size());
-
         if (lastExpanded != search.getLastExpanded())
         {
             lastExpanded = search.getLastExpanded();
+            visited.add(lastExpanded);
             stats[EXPANDED].increment();
         }
+
+        visited.addAll(search.getNodesVisited());
+        stats[VISITED].setValue(visited.size());
 
         if (search.getSolutionPath().size() > 0)
             stats[SOLUTION].increment();

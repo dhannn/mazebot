@@ -10,16 +10,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class RuntimeAnalysis 
 {
     private static final String DAT_DIRECTORY = "dat";
     private static final String TESTCASES_DIRECTORY = DAT_DIRECTORY + "/testcases";
-
-    private static Stack<Maze> mazes;
+    
+    private static ArrayList<Maze> mazes;
     private static SearchStrategy[] searches = {new BFS(), new DFS()};
+    private static ArrayList<String> mazecode = new ArrayList<String>();
 
     private static ArrayList<SampleData> sampleDataList = new ArrayList<SampleData>();
 
@@ -33,49 +33,40 @@ public class RuntimeAnalysis
 
         writeSampleDataToFile(sampleDataList);
     }
-
-    /**
-     * TODO:    Create a function that will loop through the TESTCASES_DIRECTORY
-     *          and create a maze object out of each file. Return the arraylist
-     *          of all maze objects created.
-     */
-    private static Stack<Maze> getMazes() throws IOException 
+    
+    private static ArrayList<Maze> getMazes() throws IOException 
     {
-        Stack<Maze> mazes = new Stack<>();
+        ArrayList<Maze> mazes = new ArrayList<>();
         File testCasesDir = new File(TESTCASES_DIRECTORY);
         File[] mazeFiles = testCasesDir.listFiles();
         for (File mazeFile : mazeFiles) {
             if (mazeFile.isFile()) {
                 Maze maze = new Maze(mazeFile.getAbsolutePath());
-                mazes.push(maze);
+                mazes.add(maze);
+
+                String code = mazeFile.getPath().substring(18, 24);
+                mazecode.add(code);
             }
         }
         return mazes;
     }
 
-    /**
-     * TODO:    Loop through each maze in the arraylist. Create a mazebot object
-     *          that takes in the current maze. Then, set the search strategy
-     *          of the mazebot. 
-     * 
-     *          Afterwards, call the getRuntime() function and store it to a variable. 
-     * 
-     *          Finally, add the pertinent details to a SampleData record 
-     *          (see how to use Record in Java; here's a link: 
-     *          https://www.baeldung.com/java-record-keyword). Add it to the 
-     *          sampleData arraylist.
-     */
     private static void getSampleData(SearchStrategy search) throws IOException 
     {
-        for (Maze maze: mazes) {
+        int i = 0;
+        for (Maze maze : mazes) {
             System.out.println("Searching Maze #" + (mazes.indexOf(maze) + 1));
             
             MazeBot mazebot = new MazeBot(maze);
-            mazebot.setSearchStrategy(search);
-            long runtime = getRuntime(mazebot);
+            
+            SearchStrategy searchInstance = search.instance();
+            mazebot.setSearchStrategy(searchInstance);
+            
+            double runtime = getRuntime(mazebot);
             int numExplored = mazebot.getNumExplored();
             int numSolution = mazebot.getNumSolution();
             SampleData sampleData = new SampleData(
+                    mazecode.get(i),
                     search.getCommonName(),
                     maze.getSize(),
                     runtime,
@@ -83,6 +74,7 @@ public class RuntimeAnalysis
                     numSolution
             );
             sampleDataList.add(sampleData);
+            i++;
         }
     }
 
@@ -94,11 +86,11 @@ public class RuntimeAnalysis
         FileWriter writer = new FileWriter(outputFile);
 
         // Write the headers to the file
-        writer.write("search_name,size,runtime,num_explored,num_solution\n");
+        writer.write("filename,search_name,size,runtime,num_explored,num_solution\n");
 
         // Loop through each sample data record and write to the file
         for (SampleData sampleData : sampleDataList) {
-            writer.write(String.format("%s,%d,%d,%d,%d\n", sampleData.searchname(), sampleData.n(), sampleData.runtime(), sampleData.numExplored(), sampleData.numSolution()));
+            writer.write(String.format("%s,%s,%d,%.4f,%d,%d\n", sampleData.code(), sampleData.searchname(), sampleData.n(), sampleData.runtime(), sampleData.numExplored(), sampleData.numSolution()));
         }
 
         // Close the writer
@@ -106,13 +98,13 @@ public class RuntimeAnalysis
     }
 
 
-    private static long getRuntime(MazeBot mazebot)
+    private static double getRuntime(MazeBot mazebot)
     {
         long start = System.nanoTime();
         mazebot.search();
         long end = System.nanoTime();
 
-        return (end - start);
+        return (end - start) / 1e6;
     }
 
     private static void generateTestCases() throws IOException 
@@ -127,8 +119,8 @@ public class RuntimeAnalysis
     /**
      * Runtime
      */
-    public record SampleData(
-        String searchname, int n, long runtime, int numExplored, int numSolution) 
+    public record SampleData(String code,
+        String searchname, int n, double runtime, int numExplored, int numSolution) 
     {
     }
 }

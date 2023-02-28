@@ -1,0 +1,5 @@
+ANALYSIS_DIR = "dat/analysis"
+SAMPLE_DATA_FILENAME = ANALYSIS_DIR + "/sample_data.csv"
+RUNTIME_SUMMARY_FILENAME = ANALYSIS_DIR + "/runtime_summary.csv"
+EXPLORED_SUMMARY_FILENAME = ANALYSIS_DIR + "/explored_summary.csv"
+SOLUTION_SUMMARY_FILENAME = ANALYSIS_DIR + "/solution_summary.csv"

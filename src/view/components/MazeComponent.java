@@ -87,6 +87,11 @@ public class MazeComponent extends GridPane implements Observer
         mazecells[row][col].setFill(Color.RED);
         addKeyFrame(Duration.ZERO, Color.RED, mazecells[row][col]);
     }
+
+    public void restartTimeline()
+    {        
+        timeline.getKeyFrames().removeAll(timeline.getKeyFrames());
+    }
     
     /**
      * Sets and renders the goal cell
@@ -146,7 +151,6 @@ public class MazeComponent extends GridPane implements Observer
         animateExpanded();
         animateVisited();
         animateSolution();
-        
         frames++;
     }
 
@@ -183,10 +187,10 @@ public class MazeComponent extends GridPane implements Observer
 
         if (cell == Type.SPACE) {
             rect.setFill(Color.WHITE);
-            addKeyFrame(Color.WHITE, rect);
+            addKeyFrame(Duration.ZERO, Color.WHITE, rect);
         } else {
             rect.setFill(Color.BLACK);
-            addKeyFrame(Color.BLACK, rect);
+            addKeyFrame(Duration.ZERO, Color.BLACK, rect);
         }
         
         return rect;

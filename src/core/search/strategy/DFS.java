@@ -10,43 +10,40 @@ import lombok.Getter;
 
 public class DFS extends SearchStrategy 
 {
-    Stack<State> states;
-    @Getter String commonName = "Depth-First Search";;
+    @Getter String commonName = "Depth-First Search";
 
     public DFS()
     {
-        states = new Stack<State>();
+        frontier = new Stack<State>();
         goal = null;
     }
 
     public DFS(State initial, State goal) 
     {
         super(initial, goal);
-        states = new Stack<State>();
+        frontier = new Stack<State>();
         extractedGoal = null;
     }
 
     @Override
     public void search() 
     {
-        states.push(initial);
+        ((Stack<State>) frontier).push(initial);
 
-        while(!states.empty()) 
+        while(!frontier.isEmpty()) 
         {
-            lastExpanded = states.pop();
-            exploredStates.add(lastExpanded);
+            lastExpanded = ((Stack<State>) frontier).pop();
+            expandedStates.add(lastExpanded);
 
-            System.out.println("Exploring State " + lastExpanded.getBotLocation());
-            
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
-            
-            if (unexplored.size() == 0)
-                continue;
-            
             notifyObservers();
-            states.add(lastExpanded);
-            states.add(unexplored.get(0));
-
+            
+            if (unexplored.size() > 0)
+            {
+                frontier.add(lastExpanded);
+                frontier.add(unexplored.get(0));
+            }
+            
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
                 extractedGoal = lastExpanded;
@@ -57,7 +54,6 @@ public class DFS extends SearchStrategy
 
         isDone = true;
         nodesVisited.removeAll(nodesVisited);
-        nodesVisited.forEach((State state) -> {System.out.println(state.getBotLocation());});
     }
 
     @Override
@@ -80,8 +76,9 @@ public class DFS extends SearchStrategy
 
             notifyObservers();
         }
-
+        
         solutionPath.add(current);
+        notifyObservers();
     }
 
     private ArrayList<State> getUnexploredStates(State current)
@@ -91,7 +88,7 @@ public class DFS extends SearchStrategy
 
         for (State state: all)
         {
-            if (!exploredStates.contains(state))
+            if (!expandedStates.contains(state))
                 unexplored.add(state);
         }
         

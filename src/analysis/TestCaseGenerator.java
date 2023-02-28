@@ -16,7 +16,7 @@ public class TestCaseGenerator
 
     private ArrayList<MazeGraph> mazes = new ArrayList<MazeGraph>();
 
-    private String format = "maze%d_%d.txt";
+    private String format = "maze%02d_%03d.txt";
 
     public TestCaseGenerator(int numTestCases, int n)
     {
