@@ -16,9 +16,9 @@ def analyze(isSparse: bool):
     num_explored = df['num_explored']
     num_solution = df['num_solution']
 
-    runtime_csv = runtime.agg(['mean','std']).to_csv()
-    num_explored_csv = num_explored.agg(['mean','std']).to_csv()
-    num_solution_csv = num_solution.agg(['mean','std']).to_csv()
+    runtime_csv = runtime.describe().to_csv()
+    num_explored_csv = num_explored.describe().to_csv()
+    num_solution_csv = num_solution.describe().to_csv()
 
     csvs = [runtime_csv, num_explored_csv, num_solution_csv]
 

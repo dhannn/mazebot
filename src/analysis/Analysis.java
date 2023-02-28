@@ -20,7 +20,7 @@ public class Analysis
     private static final String SPARSE_DIRECTORY = TESTCASES_DIRECTORY + "/sparse";
     
     private static ArrayList<Maze> mazes;
-    private static SearchStrategy[] searches = {new BFS(), new DFS()};
+    private static SearchStrategy[] searches = {new DFS(), new BFS()};
     private static ArrayList<String> mazecode = new ArrayList<String>();
 
     private static ArrayList<SampleData> sampleDataList;

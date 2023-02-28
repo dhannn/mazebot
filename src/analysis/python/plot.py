@@ -13,9 +13,34 @@ def get_data(filename: str, algo: str):
         for row in rows:
             if row[1] == algo:
                 x.append(int(row[0]))
-                y.append(float(row[2]))
+                y.append(float(row[3]))
 
     return x, y
+
+def box_and_whiskers():
+    attribs = ['runtime', 'num_explored', 'num_solution']
+
+    df = pd.read_csv(glb.S_DATA_FILENAME)
+    
+    for attrib in attribs:
+
+        size = 4
+
+        while size <= 64:
+            _df = df.loc[df['size'] == size]
+            boxplot = _df.boxplot(figsize=(6,10), widths=(0.5, 0.5), by=['search_name'], column=[attrib])
+                        
+            boxplot.set_xlabel('Search Algorithm')
+            boxplot.set_ylabel('Runtime (in ms)')
+
+            plt.suptitle('')
+            boxplot.set_title('')
+
+            fig = boxplot.get_figure()
+            fig.set_tight_layout(True)
+            fig.savefig(glb.PLOT_DIR + "/" + attrib + str(size) + "_dist.png")
+            size = size << 1
+
 
 def plot():
 
@@ -31,20 +56,11 @@ def plot():
         (glb.D_SOLUTION_SUMMARY, glb.S_SOLUTION_SUMMARY): glb.SOLUTION_PLOT,
     }
 
-    TITLES = [
-        'Runtime (in ms) of BFS and DFS per input size (n)',
-        'Explored states of BFS and DFS per input size (n)', 
-        'Total states in solution of BFS and DFS per input size (n)'
-    ]
-
     LABEL_X = 'Input size (n)'
     LABEL_Y = ['Runtime (in ms)', 'Explored states', 'Total states in solution']
 
     for s, summary in enumerate(summaries):
         fig = plt.figure(figsize=[10, 8])
-        fig.suptitle(TITLES[s])
-
-        SUBTITLES=['(dense mazes)', '(sparse mazes)']
 
         for i, csvfile in enumerate(summary):
             ax = fig.add_subplot(2, 1, i + 1)
@@ -59,11 +75,12 @@ def plot():
             ax.set_xscale('log', base=2)
             ax.set_yscale('log', base=2)
             ax.legend(['dfs', 'bfs'])
-
-            ax.set_title(SUBTITLES[i])
         
         fig.set_tight_layout(True)
         
         plot_file = summary_to_plot[(summary[0], summary[1])]
         fig.savefig(plot_file)
+    
+    box_and_whiskers()
+
 
