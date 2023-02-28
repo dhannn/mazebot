@@ -42,11 +42,14 @@ public class BFS extends SearchStrategy
             expandedStates.add(lastExpanded);
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
-            
-            frontier.addAll(unexplored);
             nodesVisited = unexplored;
-
+            
             notifyObservers();
+            
+            if (unexplored.size() > 0)
+            {
+                frontier.addAll(unexplored);
+            }
             
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {
@@ -58,45 +61,6 @@ public class BFS extends SearchStrategy
 
         isDone = true;
         nodesVisited.removeAll(nodesVisited);
-    }
-
-    @Override
-    public void reconstructPath() 
-    {
-        if (extractedGoal == null) 
-        {
-            notifyObservers();
-            return;
-        }
-
-        State current = extractedGoal;
-
-        while (!current.equals(initial))
-        {
-            solutionPath.add(current);
-
-            if (current.getPredecessor() != null)
-                current = current.getPredecessor();
-
-            notifyObservers();
-        }
-        
-        solutionPath.add(current);
-        notifyObservers();
-    }
-
-    private ArrayList<State> getUnexploredStates(State current)
-    {
-        ArrayList<State> all = MazeBot.getNextStates(current);
-        ArrayList<State> unexplored = new ArrayList<State>();
-
-        for (State state: all)
-        {
-            if (!frontier.contains(state) && !expandedStates.contains(state))
-                unexplored.add(state);
-        }
-        
-        return unexplored;
     }
 
     @Override

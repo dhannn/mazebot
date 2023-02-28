@@ -50,10 +50,48 @@ public abstract class SearchStrategy implements Observable
 
         observers = new ArrayList<Observer>();
     }
+    
+    public void reconstructPath() 
+    {
+        if (extractedGoal == null) 
+        {
+            notifyObservers();
+            return;
+        }
+
+        State current = extractedGoal;
+
+        while (!current.equals(initial))
+        {
+            solutionPath.add(current);
+
+            if (current.getPredecessor() != null)
+                current = current.getPredecessor();
+
+            notifyObservers();
+        }
+        
+        solutionPath.add(current);
+        notifyObservers();
+    }
 
     public void setInitial(State initial)
     {
         this.initial = initial;
+    }
+
+    protected ArrayList<State> getUnexploredStates(State current)
+    {
+        ArrayList<State> all = MazeBot.getNextStates(current);
+        ArrayList<State> unexplored = new ArrayList<State>();
+
+        for (State state: all)
+        {
+            if (!expandedStates.contains(state))
+                unexplored.add(state);
+        }
+        
+        return unexplored;
     }
     
     public void setGoal(State goal)
@@ -80,5 +118,4 @@ public abstract class SearchStrategy implements Observable
     public abstract String getCommonName();
     public abstract SearchStrategy instance(); 
     public abstract void search();
-    public abstract void reconstructPath();
 }

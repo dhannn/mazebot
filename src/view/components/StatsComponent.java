@@ -145,10 +145,10 @@ public class StatsComponent extends TextFlow implements Observer
         if (lastExpanded != search.getLastExpanded())
         {
             lastExpanded = search.getLastExpanded();
-            visited.add(lastExpanded);
             stats[EXPANDED].increment();
         }
-
+        
+        visited.add(lastExpanded);
         visited.addAll(search.getNodesVisited());
         stats[VISITED].setValue(visited.size());
 
