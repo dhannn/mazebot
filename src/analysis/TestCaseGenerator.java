@@ -13,15 +13,17 @@ public class TestCaseGenerator
 {
     private int numTestCases;
     private int n;
+    private boolean isSparse;
 
     private ArrayList<MazeGraph> mazes = new ArrayList<MazeGraph>();
 
     private String format = "maze%02d_%03d.txt";
 
-    public TestCaseGenerator(int numTestCases, int n)
+    public TestCaseGenerator(int numTestCases, int n, boolean isSparse)
     {
         this.n = n;
         this.numTestCases = numTestCases;
+        this.isSparse = isSparse;
 
         generateTestCases();
     }
@@ -35,6 +37,9 @@ public class TestCaseGenerator
             FileWriter file = new FileWriter(directory + "//" + filename);
             Maze maze = GraphToCell.mazegraphToCell(mazes.get(i - 1));
             
+            if (isSparse)
+                maze.setSparse();
+
             file.append(n + "\n");
             file.append(maze.toString());
             file.close();

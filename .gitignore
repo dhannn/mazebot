@@ -2,4 +2,5 @@
 bin/**
 **.class
 **.jar
-dat/testcases/**
+dat/**
+**/__pycache__

@@ -29,13 +29,15 @@ public class Analysis
     {
         generateTestCases();
         mazes = getMazes(false);
+        sampleDataList = new ArrayList<SampleData>();
         
         for (SearchStrategy search: searches)
-            getSampleData(search);
-
+        getSampleData(search);
+        
         writeSampleDataToFile(sampleDataList, false);
         
         mazes = getMazes(true);
+        sampleDataList = new ArrayList<SampleData>();
         
         for (SearchStrategy search: searches)
             getSampleData(search);
@@ -59,7 +61,7 @@ public class Analysis
 
                 mazes.add(maze);
 
-                String code = mazeFile.getPath().substring(18, 24);
+                String code = mazeFile.getPath().substring(24, 31);
                 mazecode.add(code);
             }
         }
@@ -68,8 +70,6 @@ public class Analysis
 
     private static void getSampleData(SearchStrategy search) throws IOException 
     {
-        sampleDataList = new ArrayList<SampleData>();
-
         int i = 0;
         for (Maze maze : mazes) {
             System.out.println("Searching Maze #" + (mazes.indexOf(maze) + 1));
@@ -132,12 +132,12 @@ public class Analysis
     {
         for (int n = 4; n <= 64; n = n << 1)
         {
-            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n);
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n, false);
             testCaseGenerator.printToFile(DENSE_DIRECTORY);
         }
         for (int n = 4; n <= 64; n = n << 1)
         {
-            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n);
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(100, n, true);
             testCaseGenerator.printToFile(SPARSE_DIRECTORY);
         }
     }

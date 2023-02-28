@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import core.maze.Maze;
 import core.search.action.*;
 import lombok.Getter;
-import lombok.Setter;
 
 public class MazeBot 
 {

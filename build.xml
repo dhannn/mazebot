@@ -1,13 +1,17 @@
 <project name="m_ai_zbot" basedir="." default="main">
     <property name="src.dir" value="src"/>
     <property name="resources.dir" value="${src.dir}/assets"/>
+    <property name="analyze.dir" value="${src.dir}/analysis/python"/>
     <property name="lib.dir" value="lib"/>
 
     <property name="dat.dir" value="dat"/>
     <property name="testcases.dir" value="${dat.dir}/testcases"/>
-    <property name="analysis.dir" value="${dat.dir}/analysis"/>
     <property name="dense.dir" value="${testcases.dir}/dense"/>
     <property name="sparse.dir" value="${testcases.dir}/sparse"/>
+
+    <property name="analysis.dir" value="${dat.dir}/analysis"/>
+    <property name="summary.dir" value="${analysis.dir}/summary"/>
+    <property name="plot.dir" value="${analysis.dir}/plot"/>
 
     <property name="out.dir" value="out"/>
     <property name="classes.dir" value="${out.dir}/classes"/>
@@ -54,17 +58,19 @@
         <delete dir="${jar.dir}/${ant.project.name}.jar"/>
         <mkdir dir="${classes.dir}"/>
 
-        <delete dir="${sparse.dir}"/>
-        <mkdir dir="${sparse.dir}"/>
-        <delete dir="${dense.dir}"/>
-        <mkdir dir="${dense.dir}"/>
-
-        <delete dir="${analysis.dir}"/>
-        <mkdir dir="${analysis.dir}"/>
         <touch file="${classes.dir}/.gitignore"/>
     </target>
 
-    <target name="analyze" depends="clean">
+    <target name="clean-dat" depends="clean">
+        <delete dir="${analysis.dir}"/>
+
+        <mkdir dir="${sparse.dir}"/>
+        <mkdir dir="${dense.dir}"/>
+        <mkdir dir="${summary.dir}"/>
+        <mkdir dir="${plot.dir}"/>
+    </target>
+
+    <target name="analyze" depends="clean-dat">
         <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
 
         <jar destfile="${jar.dir}/analyze.jar" basedir="${classes.dir}">
@@ -78,6 +84,10 @@
                 <path location="${jar.dir}/analyze.jar"/>
             </classpath>
         </java>
+
+        <exec dir="." executable="python">
+            <arg line="${analyze.dir}/analyze.py"/>
+        </exec>
     </target>
 
     <target name="main" depends="clean,run"/>    

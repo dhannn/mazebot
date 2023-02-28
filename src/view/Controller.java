@@ -5,7 +5,6 @@ import core.maze.Maze;
 import core.maze.Cell.Type;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
-import core.search.State;
 import core.search.strategy.BFS;
 import core.search.strategy.DFS;
 import javafx.scene.Scene;

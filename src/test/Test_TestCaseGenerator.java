@@ -10,7 +10,7 @@ public class Test_TestCaseGenerator
     {
         for (int n = 4; n <= 64; n = n << 1)
         {
-            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(20, n);
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(20, n, true);
             testCaseGenerator.printToFile("D:\\Y2T2\\CSINTSY\\MCO1_StateBasedSearch\\source\\dat\\testcases");
         }
 

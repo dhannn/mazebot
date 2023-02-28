@@ -14,7 +14,6 @@ public class Maze
     @Getter @Setter int size;
     @Getter @Setter Cell initialCell;
     @Getter @Setter Cell goalCell;
-    @Getter boolean isSparse = false;
 
     
     public final static int LEFT  =   0;
@@ -100,7 +99,7 @@ public class Maze
 
     public void setSparse()
     {
-        
+        setSparse(0.5);
     }
 
     @Override
