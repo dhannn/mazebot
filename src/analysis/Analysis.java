@@ -3,8 +3,7 @@ package analysis;
 import core.maze.Maze;
 import core.search.MazeBot;
 import core.search.SearchStrategy;
-import core.search.strategy.BFS;
-import core.search.strategy.DFS;
+import core.search.strategy.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,7 +19,7 @@ public class Analysis
     private static final String SPARSE_DIRECTORY = TESTCASES_DIRECTORY + "/sparse";
     
     private static ArrayList<Maze> mazes;
-    private static SearchStrategy[] searches = {new DFS(), new BFS()};
+    private static SearchStrategy[] searches = {new DFS(), new BFS(), new AStar()};
     private static ArrayList<String> mazecode = new ArrayList<String>();
 
     private static ArrayList<SampleData> sampleDataList;
@@ -61,7 +60,7 @@ public class Analysis
 
                 mazes.add(maze);
 
-                String code = mazeFile.getPath().substring(24, 31);
+                String code = mazeFile.getPath().substring(24, 30);
                 mazecode.add(code);
             }
         }
@@ -107,7 +106,7 @@ public class Analysis
         FileWriter writer = new FileWriter(outputFile);
 
         // Write the headers to the file
-        writer.write("filename,search_name,size,runtime,num_explored,num_solution\n");
+        writer.write("maze_code,search_name,size,runtime,num_explored,num_solution\n");
 
         // Loop through each sample data record and write to the file
         for (SampleData sampleData : sampleDataList) {

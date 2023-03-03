@@ -3,7 +3,6 @@ package core.search.strategy;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
 import lombok.Getter;
@@ -33,18 +32,20 @@ public class DFS extends SearchStrategy
         while(!frontier.isEmpty()) 
         {
             lastExpanded = ((Stack<State>) frontier).pop();
-            expandedStates.add(lastExpanded);
-
+            
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);
             nodesVisited = unexplored;
             
-            notifyObservers();
+            if (!expandedStates.contains(lastExpanded))
+                notifyObservers();
             
             if (unexplored.size() > 0)
             {
                 frontier.add(lastExpanded);
                 frontier.add(unexplored.get(0));
             }
+
+            expandedStates.add(lastExpanded);
             
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {

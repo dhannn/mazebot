@@ -1,5 +1,6 @@
 import pandas
 import globals as glb
+import scipy.stats as sp
 
 def generate():
     analyze(True)
@@ -15,6 +16,10 @@ def analyze(isSparse: bool):
     runtime = df['runtime']
     num_explored = df['num_explored']
     num_solution = df['num_solution']
+    
+    n_runtime = df['runtime']
+    n_num_explored = df['num_explored']
+    n_num_solution = df['num_solution']
 
     runtime_csv = runtime.describe().to_csv()
     num_explored_csv = num_explored.describe().to_csv()

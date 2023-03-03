@@ -28,7 +28,7 @@ def box_and_whiskers():
 
         while size <= 64:
             _df = df.loc[df['size'] == size]
-            boxplot = _df.boxplot(figsize=(6,10), widths=(0.5, 0.5), by=['search_name'], column=[attrib])
+            boxplot = _df.boxplot(figsize=(6,10), widths=(0.5, 0.5, 0.5), by=['search_name'], column=[attrib])
                         
             boxplot.set_xlabel('Search Algorithm')
             boxplot.set_ylabel('Runtime (in ms)')
@@ -66,15 +66,17 @@ def plot():
             ax = fig.add_subplot(2, 1, i + 1)
             dfs_x, dfs_y = get_data(csvfile, "Depth-First Search")
             bfs_x, bfs_y = get_data(csvfile, "Breadth-First Search")
+            astar_x, astar_y = get_data(csvfile, "A* Search")
             ax.plot(dfs_x, dfs_y, label='dfs', marker='o')
             ax.plot(bfs_x, bfs_y, label='bfs', marker='o')
+            ax.plot(astar_x, astar_y, label='a*', marker='o')
 
             ax.set_xlabel(LABEL_X)
             ax.set_ylabel(LABEL_Y[s])
 
             ax.set_xscale('log', base=2)
             ax.set_yscale('log', base=2)
-            ax.legend(['dfs', 'bfs'])
+            ax.legend(['dfs', 'bfs', 'a*'])
         
         fig.set_tight_layout(True)
         

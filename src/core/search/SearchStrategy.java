@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Stack;
 
 import lombok.Getter;
+import lombok.Setter;
 import utils.Observable;
 import utils.Observer;
 
@@ -23,12 +24,14 @@ public abstract class SearchStrategy implements Observable
     @Getter protected boolean isDone;
     protected State initial;
     protected State goal;
-    protected State extractedGoal;
+    protected State extractedGoal = null;
+    @Setter private MazeBot mazebot;
 
     public SearchStrategy() 
     {
         expandedStates = new HashSet<State>();
         isFound = false;
+        isDone = false;
         solutionPath = new Stack<State>();
 
         observers = new ArrayList<Observer>();
@@ -82,12 +85,12 @@ public abstract class SearchStrategy implements Observable
 
     protected ArrayList<State> getUnexploredStates(State current)
     {
-        ArrayList<State> all = MazeBot.getNextStates(current);
+        ArrayList<State> all = mazebot.getNextStates(current);
         ArrayList<State> unexplored = new ArrayList<State>();
 
         for (State state: all)
         {
-            if (!expandedStates.contains(state))
+            if (!frontier.contains(state) && !expandedStates.contains(state))
                 unexplored.add(state);
         }
         
@@ -112,7 +115,7 @@ public abstract class SearchStrategy implements Observable
 
     public void notifyObservers()
     {
-        observers.forEach(observer -> observer.update() );
+        observers.forEach(observer -> observer.update());
     }
 
     public abstract String getCommonName();

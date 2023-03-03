@@ -2,17 +2,14 @@ package core.search.strategy;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
-import core.search.MazeBot;
 import core.search.SearchStrategy;
 import core.search.State;
 import lombok.Getter;
 
 public class BFS extends SearchStrategy 
 {
-    Queue<State> frontier;
     @Getter String commonName = "Breadth-First Search";
 
     public BFS()
@@ -38,7 +35,7 @@ public class BFS extends SearchStrategy
 
         while(!frontier.isEmpty()) 
         {
-            lastExpanded = frontier.poll();
+            lastExpanded = ((LinkedList<State>) frontier).poll();
             expandedStates.add(lastExpanded);
             
             ArrayList<State> unexplored = getUnexploredStates(lastExpanded);

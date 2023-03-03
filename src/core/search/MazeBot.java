@@ -15,11 +15,11 @@ public class MazeBot
 
     @Getter private State initial;
     @Getter private State goal;
-    private static Maze maze;
+    private Maze maze;
     private SearchStrategy searchStrategy;
     private final static Action[] ACTION = {
         new Left(), new Up(), new Right(), new Down()};
-    @Getter private static int size;
+    @Getter private int size;
 
     /**
      * This constructor will initialize the initial and goal state from the maze.
@@ -29,8 +29,8 @@ public class MazeBot
      */
     public MazeBot(Maze maze)
     {
-        MazeBot.maze = maze;
-        MazeBot.size = maze.getSize();
+        this.maze = maze;
+        this.size = maze.getSize();
         this.initial = new State(maze.getInitialCell(), null);
         this.goal = new State(maze.getGoalCell(), null);
     }
@@ -40,15 +40,16 @@ public class MazeBot
         searchStrategy = search;
         searchStrategy.setInitial(initial);
         searchStrategy.setGoal(goal);
+        searchStrategy.setMazebot(this);
     }
 
-    public static ArrayList<State> getNextStates(State state)
+    public ArrayList<State> getNextStates(State state)
     {
         ArrayList<State> states = new ArrayList<State>();
 
         for (Action action: ACTION)
         {
-            State nextState = MazeBot.next(state, action);
+            State nextState = this.next(state, action);
 
             if (State.isValid(nextState))
                 states.add(nextState);
@@ -69,13 +70,13 @@ public class MazeBot
     }
 
     /**
-     * This function gets the next state by invoking the {@code act()} method
+     * This function gets the next state by invokinx g the {@code act()} method
      * of the give {@code Action} object.
      * @param state
      * @param action
      * @return
      */
-    public static State next(State state, Action action) 
+    public State next(State state, Action action) 
     {
         return action.act(state, size, maze.getCellTypes());
     }

@@ -38,6 +38,8 @@ public class AStar extends SearchStrategy
                 break;
             }
         }
+        
+        isDone = true;
     }
     
     @Override
