@@ -44,9 +44,7 @@ public class BFS extends SearchStrategy
             notifyObservers();
             
             if (unexplored.size() > 0)
-            {
                 frontier.addAll(unexplored);
-            }
             
             if (State.isGoal(lastExpanded, goal.getBotLocation()))
             {

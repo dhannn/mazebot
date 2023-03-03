@@ -28,7 +28,12 @@ def box_and_whiskers():
 
         while size <= 64:
             _df = df.loc[df['size'] == size]
-            boxplot = _df.boxplot(figsize=(6,10), widths=(0.5, 0.5, 0.5), by=['search_name'], column=[attrib])
+            Q1 = _df[attrib].quantile(0.25)
+            Q3 = _df[attrib].quantile(0.75)
+            IQR = Q3 - Q1  
+
+            filter = (_df[attrib] >= Q1 - 1.5 * IQR) & (_df[attrib] <= Q3 + 1.5 *IQR)
+            boxplot = _df.loc[filter].boxplot(figsize=(6,10), widths=(0.5, 0.5, 0.5), by=['search_name'], column=[attrib])
                         
             boxplot.set_xlabel('Search Algorithm')
             boxplot.set_ylabel('Runtime (in ms)')

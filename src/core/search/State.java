@@ -10,6 +10,7 @@ public class State
 {
     @Getter @Setter private Cell botLocation;
     @Getter @Setter private State predecessor;
+    @Getter private int cost = 0;
 
     /**
      * Slay
@@ -20,11 +21,9 @@ public class State
     {
         this.botLocation = cell;
         this.predecessor = predecessor;
-    }
 
-    public State(Cell cell)
-    {
-        botLocation = cell;
+        if (predecessor != null)
+            this.cost = predecessor.cost + 1;
     }
 
     /**
