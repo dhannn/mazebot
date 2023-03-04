@@ -14,7 +14,7 @@ public class AStar extends SearchStrategy
     @Override
     public void search() 
     {
-        Heuristic heuristic = new Heuristic();
+        AStarPriority heuristic = new AStarPriority();
         heuristic.setGoal(goal);
 
         frontier = new PriorityQueue<State>(heuristic);
