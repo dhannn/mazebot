@@ -8,7 +8,7 @@ import core.search.SearchStrategy;
 import core.search.strategy.AStar;
 import core.search.strategy.BFS;
 import core.search.strategy.DFS;
-import core.search.strategy.GreedyBFS;
+import core.search.strategy.HDFS;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,7 +28,7 @@ public class Controller
     private static StatsComponent statsComponent;
     private static MazeComponent mazeComponent;
 
-    private static SearchStrategy[] searches = {new DFS(), new BFS(), new GreedyBFS(), new AStar()};
+    private static SearchStrategy[] searches = {new DFS(), new BFS(), new HDFS(), new AStar()};
     private static SearchStrategy chosenSearch;
 
     private static MazeBot mazeBot;

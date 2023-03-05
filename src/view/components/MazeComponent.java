@@ -39,6 +39,8 @@ public class MazeComponent extends GridPane implements Observer
      * and the size of the grid (in number, not in pixels).
      */
     private final double CELL_SIZE;
+
+    private final int MAZE_SIZE;
     
     /**
      * A matrix whose elements point to each of their cell.
@@ -67,6 +69,7 @@ public class MazeComponent extends GridPane implements Observer
     public MazeComponent(Type[][] maze, int size)
     {
         CELL_SIZE = calculateCellSize(size);
+        MAZE_SIZE = size;
         mazecells = new Rectangle[size][size];
 
         createGrid(maze, size);
@@ -89,8 +92,18 @@ public class MazeComponent extends GridPane implements Observer
     }
 
     public void restartTimeline()
-    {        
-        timeline.getKeyFrames().removeAll(timeline.getKeyFrames());
+    {
+        int size = timeline.getKeyFrames().size();
+        
+        for (int i = size - 1; i >= 0; i--)
+        {
+            KeyFrame keyframe = timeline.getKeyFrames().get(i);
+            
+            if (keyframe.getTime() != Duration.ZERO)
+                timeline.getKeyFrames().remove(keyframe);
+        }
+
+        timeline.stop();
     }
     
     /**

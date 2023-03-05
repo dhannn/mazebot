@@ -130,7 +130,21 @@ public class StatsComponent extends TextFlow implements Observer
 
     public void restartTimeline()
     {
-        timeline.getKeyFrames().removeAll(timeline.getKeyFrames());
+        int size = timeline.getKeyFrames().size();
+
+        for (int i = size - 1; i >= 0; i--)
+        {
+            KeyFrame keyframe = timeline.getKeyFrames().get(i);
+            
+            if (keyframe.getTime() != Duration.ZERO)
+                timeline.getKeyFrames().remove(keyframe);
+        }
+
+        timeline.stop();
+        stats[VISITED] = new Stat("Number of states visited", DEFAULT_STAT);
+        stats[EXPANDED] = new Stat("Number of states expanded", DEFAULT_STAT);
+        stats[SOLUTION] = new Stat(
+            "Number of states in the solution", DEFAULT_STAT);
     }
 
     @Override
