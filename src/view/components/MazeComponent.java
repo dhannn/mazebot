@@ -71,6 +71,7 @@ public class MazeComponent extends GridPane implements Observer
 
         createGrid(maze, size);
         setMinSize(GRID_SIZE, GRID_SIZE);
+        setGridLinesVisible(true);
 
         float frameRate = (size / MAX_GRID_SIZE) * MAX_FRAME_RATE;
         timeline.setRate(frameRate);
