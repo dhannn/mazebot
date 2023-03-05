@@ -99,7 +99,7 @@ public class Maze
 
     public void setSparse()
     {
-        setSparse(0.2);
+        setSparse(0.3);
     }
 
     @Override

@@ -33,7 +33,8 @@ public class State
      */
     public static boolean isValid(State state)
     {
-        if(state.getBotLocation().getType() == Type.SPACE && !(state.getBotLocation() instanceof NullCell)) {
+        if(state.getBotLocation().getType() == Type.SPACE && 
+            !(state.getBotLocation() instanceof NullCell)) {
             return true;
         }
 
