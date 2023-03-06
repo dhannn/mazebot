@@ -66,7 +66,7 @@ public class Controller
             System.err.println("The maze file does not exist.");
         }
     }
-
+    
     public static void getChosenAlgorithm()
     {
         String chosen = animationView.getChosenAlgorithm();
